@@ -357,17 +357,7 @@ export const projects = [
     tags: ['Kotlin', 'Jetpack Compose', 'Default SMS role', 'Hilt', 'Room', 'RxJava'],
   },
 
-  {
-    slug: 'ravi-phone-call',
-    title: 'Ravi Phone Call',
-    type: 'Dialer & Contacts',
-    status: 'completed',
-    icon: '/images/apps/ravi-phone-call.png',
-    summary: 'Dialer with recents, contacts and spam blocking through call screening.',
-    features: ['Dial pad, recents and contacts tabs', 'Per-number call history', 'Number and spam blocking', 'Caller-ID overlay'],
-    highlights: ['CallScreeningService with a Room block list', 'MVVM with LiveData and coroutines'],
-    tags: ['Kotlin', 'XML Views', 'CallScreeningService', 'Room', 'MVVM'],
-  },
+
   {
     slug: 'voice-recorder',
     title: 'Voice Recorder',

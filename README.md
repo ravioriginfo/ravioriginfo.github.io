@@ -46,7 +46,7 @@
 | <img src="public/images/apps/messages-compose.webp" width="48" /> | [**Messages**](https://ravioriginfo.github.io/projects/messages-compose) | Default SMS & MMS app built in Jetpack Compose | 🟢 [Google Play](https://play.google.com/store/apps/details?id=com.message.textmessenger.smsapp) |
 | <img src="public/images/apps/gallery-pro.webp" width="48" /> | [**Gallery - Photo Gallery**](https://ravioriginfo.github.io/projects/gallery-pro) | Compose gallery with timeline, editor & photo picker | 🟢 [Google Play](https://play.google.com/store/apps/details?id=com.gallery.picturegalleryapp.gallerypro) |
 
-➡️ **[See all 16 apps →](https://ravioriginfo.github.io/projects)**
+➡️ **[See all 15 apps →](https://ravioriginfo.github.io/projects)**
 
 ---
 
