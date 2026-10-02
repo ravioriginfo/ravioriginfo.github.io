@@ -9,6 +9,7 @@ import { paletteOpen } from './composables/palette'
 const { y } = useWindowScroll()
 const { height } = useWindowSize()
 const progress = computed(() => {
+  if (typeof document === 'undefined') return 0
   const max = document.documentElement.scrollHeight - height.value
   return max > 0 ? Math.min(1, y.value / max) : 0
 })

@@ -3,6 +3,13 @@ import { reactive } from 'vue'
 import { profile, socials } from '../data/portfolio'
 import AppIcon from '../components/AppIcon.vue'
 import SectionHeading from '../components/SectionHeading.vue'
+import { useSeo } from '../composables/seo'
+
+useSeo({
+  title: 'Contact — Hire an Android Developer',
+  description: 'Get in touch with Ravi Sorathiya for Android app development in Kotlin and Jetpack Compose.',
+  path: '/contact',
+})
 
 // GitHub Pages is static, so the form opens the visitor's mail client.
 // To receive submissions directly, swap this for a service like Formspree.

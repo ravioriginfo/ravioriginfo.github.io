@@ -1,7 +1,8 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import { projects, profile, statuses } from '../data/portfolio'
+import { projects, profile, SITE_URL, statuses } from '../data/portfolio'
+import { personSchema, useSeo } from '../composables/seo'
 import AppIcon from '../components/AppIcon.vue'
 import SkillBadge from '../components/SkillBadge.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -21,9 +22,47 @@ const tab = ref('features')
 const { copy, copied } = useClipboard({ copiedDuring: 1600 })
 const copyLink = () => copy(window.location.href)
 
-watchEffect(() => {
-  if (project.value) document.title = `${project.value.title} — ${profile.name}`
-})
+// Each project page is remounted per slug (App.vue keys RouterView by path).
+const p = project.value
+if (p) {
+  const url = `${SITE_URL}/projects/${p.slug}`
+  const category = {
+    Messaging: 'CommunicationApplication',
+    'Dialer & Contacts': 'CommunicationApplication',
+    'Gallery & Media': 'MultimediaApplication',
+    Productivity: 'BusinessApplication',
+    Social: 'SocialNetworkingApplication',
+  }
+  useSeo({
+    title: `${p.title} — Android App (${p.type})`,
+    description: `${p.summary} ${p.playUrl ? 'Available on Google Play.' : statuses[p.status].label + '.'} Built with ${p.tags.slice(0, 4).join(', ')}.`,
+    path: `/projects/${p.slug}`,
+    image: p.icon,
+    type: 'article',
+    jsonLd: [
+      {
+        '@type': 'SoftwareApplication',
+        name: p.title,
+        description: p.summary,
+        operatingSystem: 'Android',
+        applicationCategory: category[p.type] ?? 'MobileApplication',
+        image: p.icon ? SITE_URL + p.icon : undefined,
+        url: p.playUrl ?? url,
+        ...(p.playUrl && { installUrl: p.playUrl, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' } }),
+        featureList: p.features.join('; '),
+        author: { '@id': personSchema['@id'], '@type': 'Person', name: profile.name },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'Projects', item: `${SITE_URL}/projects` },
+          { '@type': 'ListItem', position: 3, name: p.title, item: url },
+        ],
+      },
+    ],
+  })
+}
 </script>
 
 <template>

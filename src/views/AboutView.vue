@@ -5,6 +5,15 @@ import AppIcon from '../components/AppIcon.vue'
 import SectionHeading from '../components/SectionHeading.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import TimelineItem from '../components/TimelineItem.vue'
+import { personSchema, useSeo } from '../composables/seo'
+
+useSeo({
+  title: 'About — Android Developer (Kotlin, Jetpack Compose)',
+  description: `About ${profile.name}: Android developer skilled in Kotlin, Jetpack Compose, Hilt, Room, CameraX and Firebase, with 11 apps shipped to Google Play.`,
+  path: '/about',
+  type: 'profile',
+  jsonLd: [{ '@type': 'ProfilePage', mainEntity: personSchema }],
+})
 
 // Tech explorer: pick a skill to see which apps use it.
 const usage = (skill) => projects.filter((p) => p.tags.includes(skill))

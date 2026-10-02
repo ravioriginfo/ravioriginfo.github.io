@@ -9,6 +9,23 @@ import SectionHeading from '../components/SectionHeading.vue'
 import SkillBadge from '../components/SkillBadge.vue'
 import TypeWriter from '../components/TypeWriter.vue'
 import { paletteOpen } from '../composables/palette'
+import { personSchema, useSeo } from '../composables/seo'
+import { SITE_URL } from '../data/portfolio'
+
+useSeo({
+  description:
+    'Ravi Sorathiya is an Android developer building Kotlin & Jetpack Compose apps — 11 apps live on Google Play including phone dialers, SMS messengers, galleries, a calendar and a PDF editor.',
+  jsonLd: [
+    personSchema,
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: `${SITE_URL}/`,
+      name: `${profile.name} — Portfolio`,
+      publisher: { '@id': personSchema['@id'] },
+    },
+  ],
+})
 
 const featured = computed(() => projects.filter((p) => p.featured))
 const flagship = projects.find((p) => p.slug === 'pdf-reader')

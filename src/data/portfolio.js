@@ -4,6 +4,8 @@
 // '/images/apps/<file>'.
 // ─────────────────────────────────────────────────────────────
 
+export const SITE_URL = 'https://ravioriginfo.github.io'
+
 const play = (id) => `https://play.google.com/store/apps/details?id=${id}`
 
 export const profile = {

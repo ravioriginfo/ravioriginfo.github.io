@@ -5,6 +5,25 @@ import { projects, statuses, types } from '../data/portfolio'
 import AppIcon from '../components/AppIcon.vue'
 import ProjectCard from '../components/ProjectCard.vue'
 import SectionHeading from '../components/SectionHeading.vue'
+import { SITE_URL } from '../data/portfolio'
+import { useSeo } from '../composables/seo'
+
+useSeo({
+  title: 'Android Apps & Projects',
+  description: `${projects.length} Android apps by Ravi Sorathiya: phone dialers, SMS messengers, photo galleries, calendar, alarm clock and a PDF editor — 11 live on Google Play.`,
+  path: '/projects',
+  jsonLd: [
+    {
+      '@type': 'CollectionPage',
+      name: 'Android Apps & Projects',
+      url: `${SITE_URL}/projects`,
+      mainEntity: {
+        '@type': 'ItemList',
+        itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.title, url: `${SITE_URL}/projects/${p.slug}` })),
+      },
+    },
+  ],
+})
 
 const route = useRoute()
 const router = useRouter()

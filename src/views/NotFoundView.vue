@@ -1,5 +1,8 @@
 <script setup>
 import AppIcon from '../components/AppIcon.vue'
+import { useSeo } from '../composables/seo'
+
+useSeo({ title: 'Page not found', noindex: true })
 </script>
 
 <template>
