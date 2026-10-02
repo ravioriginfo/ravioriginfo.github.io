@@ -6,6 +6,8 @@ featured: true
 order: 40
 icon: /images/apps/gallery-pro.webp
 playPackage: com.gallery.picturegalleryapp.gallerypro
+developer: "Video Player & Media Player"
+developerUrl: https://play.google.com/store/apps/developer?id=Video+Player+%26+Media+Player
 summary: "A fast Compose gallery with timeline, albums, search, editor and a system photo picker."
 features:
   - "Timeline and album views with pinch-to-zoom grid"

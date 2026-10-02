@@ -6,6 +6,8 @@ featured: false
 order: 120
 icon: /images/apps/messenger-all-social.webp
 playPackage: com.allmessages.messengerapp.allinonesocialmediaapps
+developer: "Scarlett Tech"
+developerUrl: https://play.google.com/store/apps/developer?id=Scarlett+Tech
 summary: "One hub to open your social, messaging and shopping sites in a lightweight in-app browser."
 features:
   - "Quick access to Facebook, Instagram, Telegram, Discord, LinkedIn and more"

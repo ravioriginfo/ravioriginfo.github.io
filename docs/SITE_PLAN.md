@@ -56,6 +56,7 @@ The file name is the slug and URL (`/projects/<slug>`). **Never rename a publish
 | `order` | — | Sort position within its status group (in-progress → live → completed). |
 | `icon` | ✅ | `/images/apps/<slug>.webp` (run `npm run icons`). |
 | `playPackage` | live only | The `applicationId`; the Google Play URL is derived from it. |
+| `developer` / `developerUrl` | live | The Google Play developer (Play Console) account that publishes the app, written by `npm run play-meta -- <slug>`. Shown as "by …" on cards, the app page (linked) and the share image. |
 | `summary` | ✅ | One sentence, ≤ 110 chars. Used for cards, SEO and share images. |
 | `features` | ✅ | 3–10 user-facing bullets. |
 | `highlights` | ✅ | 2–8 technical bullets. |
@@ -172,6 +173,7 @@ Newest first. Record decisions that a future agent might otherwise undo.
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-02 | Each live app shows its publishing Google Play developer account ("by …") on cards, the app page and share images. |
 | 2026-10-02 | Articles get their own registry, `docs/POSTS.md`, checked by `npm run check` like `PROJECTS.md`. |
 | 2026-10-02 | **Content-driven:** projects and posts are Markdown files validated by zod; the old hard-coded `projects` array was removed. |
 | 2026-10-02 | Blog ("Dev Notes") added. Articles are drafted from real code and stay `draft: true` until the owner approves; drafts are stripped from production bundles. |

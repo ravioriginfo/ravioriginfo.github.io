@@ -97,6 +97,16 @@ if (p) {
               <span class="font-mono text-sm text-brand-600 dark:text-brand-400">{{ project.type }}</span>
             </div>
             <h1 class="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">{{ project.title }}</h1>
+            <a
+              v-if="project.developer"
+              :href="project.developerUrl"
+              target="_blank"
+              rel="noopener"
+              class="mt-2 inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-brand-600 dark:hover:text-brand-400"
+              :title="`More apps by ${project.developer} on Google Play`"
+            >
+              by {{ project.developer }} <AppIcon name="external" class="size-3.5" />
+            </a>
             <p class="mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-400">{{ project.summary }}</p>
           </div>
         </div>

@@ -6,6 +6,8 @@ featured: false
 order: 110
 icon: /images/apps/alarm-clock.webp
 playPackage: com.alarmclock.simplealarm.alarmapp
+developer: "Alarm Clock - Wake Up Clock"
+developerUrl: https://play.google.com/store/apps/developer?id=Alarm+Clock+-+Wake+Up+Clock
 summary: "Alarm clock with wake-up challenges, timer, stopwatch, reminders and sleep sounds."
 features:
   - "Alarms with dismiss tasks: math, memory game, retype text"

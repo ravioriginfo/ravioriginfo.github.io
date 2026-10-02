@@ -41,6 +41,7 @@ for (const p of projects) {
   if (!p.icon) warn.push(`${p.slug}: no icon (a gradient letter tile is shown)`)
   for (const s of p.screenshots ?? []) if (!existsSync(at(`public${s.src}`))) errors.push(`${p.slug}: screenshot not found: public${s.src}`)
   if (p.status === 'live' && !p.screenshots?.length) warn.push(`${p.slug}: live app without screenshots (run npm run screenshots -- ${p.slug})`)
+  if (p.status === 'live' && !p.developer) warn.push(`${p.slug}: live app without developer (run npm run play-meta -- ${p.slug})`)
   if (p.body.trim().length < 80) warn.push(`${p.slug}: case study body is very short`)
 }
 const featured = projects.filter((p) => p.featured).length

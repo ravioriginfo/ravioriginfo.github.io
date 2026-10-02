@@ -6,6 +6,8 @@ featured: false
 order: 80
 icon: /images/apps/gallery-photo-album.webp
 playPackage: com.albumgallery.imagegallery.photogallery
+developer: "Gallery - Photo gallery"
+developerUrl: https://play.google.com/store/apps/developer?id=Gallery+-+Photo+gallery
 summary: "Photo & video gallery with albums, zoomable viewer, video player and crop tools."
 features:
   - "Photos and videos organised into albums"

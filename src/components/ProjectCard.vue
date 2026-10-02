@@ -41,6 +41,8 @@ const visibleTags = computed(() => props.project.tags.slice(0, 4))
 
       <p class="mt-5 text-xs font-medium tracking-wide text-brand-600 uppercase dark:text-brand-400">{{ project.type }}</p>
       <h3 class="mt-1 text-lg font-semibold">{{ project.title }}</h3>
+      <!-- Plain text here: the whole card is already a link (no nested anchors). -->
+      <p v-if="project.developer" class="mt-0.5 truncate text-xs text-slate-500">by {{ project.developer }}</p>
       <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ project.summary }}</p>
 
       <div class="mt-4 flex flex-wrap gap-1.5">

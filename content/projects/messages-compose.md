@@ -6,6 +6,8 @@ featured: true
 order: 30
 icon: /images/apps/messages-compose.webp
 playPackage: com.message.textmessenger.smsapp
+developer: "Tiana Station"
+developerUrl: https://play.google.com/store/apps/developer?id=Tiana+Station
 summary: "A modern default SMS & MMS app, rebuilt from the ground up in Jetpack Compose."
 features:
   - "Default SMS/MMS messaging with group conversations"

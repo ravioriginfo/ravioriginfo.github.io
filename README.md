@@ -132,7 +132,7 @@ You can also add a line to the **Inbox** in `docs/PROJECTS.md` and ask Claude to
    The interesting technical parts.
    ```
 
-3. **Screenshots** (live apps): `npm run screenshots -- my-app` pulls them from the app's Google Play listing.
+3. **Screenshots & developer** (live apps): `npm run screenshots -- my-app` and `npm run play-meta -- my-app` pull them from the app's Google Play listing.
 4. **Registry:** add a row to [`docs/PROJECTS.md`](docs/PROJECTS.md), then run `npm run check`.
 5. **Publish:** `git add -A`, `git commit -m "Add My App"`, `git push`. The site rebuilds in about 2 minutes.
 
@@ -158,6 +158,7 @@ npm run preview        # serve the production build
 npm run icons          # normalise app icons (+ PWA icons)
 npm run screenshots -- <slug>   # fetch Google Play screenshots for an app
 npm run og             # regenerate share images (+ this README's banner)
+npm run play-meta -- <slug>     # fetch the Play developer (console) name for an app
 ```
 
 ---

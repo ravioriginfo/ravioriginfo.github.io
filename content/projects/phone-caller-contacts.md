@@ -6,6 +6,8 @@ featured: false
 order: 70
 icon: /images/apps/phone-caller-contacts.webp
 playPackage: com.calldialerpro.mobiledialer.phonebookdialer
+developer: "Phone Caller"
+developerUrl: https://play.google.com/store/apps/developer?id=Phone++Caller
 summary: "A phonebook dialer with full-screen caller ID, speed dial and quick responses."
 features:
   - "Default dialer with keypad, history and contacts"

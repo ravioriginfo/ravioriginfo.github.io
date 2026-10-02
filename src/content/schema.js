@@ -16,6 +16,9 @@ export const projectSchema = z
     order: z.number().int().default(100),
     icon: imagePath.or(z.literal('')).default(''),
     playPackage: z.string().regex(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+$/, 'must be an applicationId').optional(),
+    // Google Play developer (Play Console) account that publishes the app.
+    developer: z.string().min(1).optional(),
+    developerUrl: z.string().url().startsWith('https://play.google.com/store/apps/').optional(),
     summary: z.string().min(10).max(110, 'summary should be ≤ 110 characters'),
     features: z.array(z.string().min(3)).min(3).max(10),
     highlights: z.array(z.string().min(3)).min(2).max(8),

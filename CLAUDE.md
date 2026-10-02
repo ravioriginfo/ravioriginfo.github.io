@@ -32,6 +32,7 @@ npm run build:drafts   # local preview build that includes draft posts (never de
 npm run icons          # normalise app icons to 256px WebP (+ PWA icons)
 npm run screenshots -- <slug>   # fetch a live app's screenshots from its own Google Play listing
 npm run og             # regenerate share images (+ README banner public/og.png)
+npm run play-meta -- <slug>     # record the Play developer (console) account of a live app
 ```
 
 ## Workflows
@@ -54,7 +55,7 @@ Source projects live in `D:\workspace\producation\` (shipped) and `D:\workspace\
    - frontmatter fields per `src/content/schema.js` (no secrets)
    - a case-study body (`## Overview`, `## How it works`, `## Architecture`…) describing only what the code shows
    - `order` sets the position within its status group
-6. **If live:** `npm run screenshots -- <slug>`
+6. **If live:** `npm run screenshots -- <slug>` and `npm run play-meta -- <slug>` (adds the Play developer account name + link)
 7. **Update `docs/PROJECTS.md`:**
    - add the Registry row
    - update Totals

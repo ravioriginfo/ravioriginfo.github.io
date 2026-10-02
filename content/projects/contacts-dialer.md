@@ -6,6 +6,8 @@ featured: false
 order: 60
 icon: /images/apps/contacts-dialer.webp
 playPackage: com.contacts.callerdialer.phonecalldialerapp
+developer: "Accura LabApp"
+developerUrl: https://play.google.com/store/apps/developer?id=Accura+LabApp
 summary: "Contacts manager and default dialer with a custom in-call screen and number blocking."
 features:
   - "Contacts list, details, add and edit"

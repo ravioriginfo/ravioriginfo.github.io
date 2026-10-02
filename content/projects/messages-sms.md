@@ -6,6 +6,8 @@ featured: false
 order: 50
 icon: /images/apps/messages-sms.webp
 playPackage: com.messages.smsmessenger.textmessage.messenger
+developer: "Savex Desing Lab"
+developerUrl: https://play.google.com/store/apps/developer?id=Savex+Desing+Lab
 summary: "A default SMS & MMS messenger with scheduling, blocking, backups and caller ID."
 features:
   - "Default SMS/MMS app with quick reply"

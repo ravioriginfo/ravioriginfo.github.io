@@ -6,6 +6,8 @@ featured: false
 order: 105
 icon: /images/apps/noys-music-video-maker.webp
 playPackage: vishow.musical.video.maker.editor
+developer: "Pratik Modi"
+developerUrl: https://play.google.com/store/apps/dev?id=8673381852594191613
 summary: "Turn photos into music videos and reels with templates, particle effects, filters and music."
 features:
   - "1000+ video templates, including festival, anniversary and Bollywood-style AI clips"

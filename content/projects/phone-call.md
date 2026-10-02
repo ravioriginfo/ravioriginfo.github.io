@@ -6,6 +6,8 @@ featured: true
 order: 20
 icon: /images/apps/phone-call.webp
 playPackage: com.phonecall.phone.contact.callerdialer
+developer: "Zombi App Maker"
+developerUrl: https://play.google.com/store/apps/developer?id=Zombi+App+Maker
 summary: "A replacement default phone dialer with spam blocking, call themes and caller ID."
 features:
   - "Full-screen incoming and in-call UI as the default dialer"

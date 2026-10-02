@@ -6,6 +6,8 @@ featured: false
 order: 90
 icon: /images/apps/gallery-locker.webp
 playPackage: com.photogallery.gallery.privategallery
+developer: "Gallery - Smart Gallery App"
+developerUrl: https://play.google.com/store/apps/developer?id=Gallery+-+Smart+Gallery+App
 summary: "Gallery with a private vault locked by pattern or biometrics, editor and recycle bin."
 features:
   - "Hide photos and videos in a private vault"

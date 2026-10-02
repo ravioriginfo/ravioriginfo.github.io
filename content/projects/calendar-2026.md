@@ -6,6 +6,8 @@ featured: false
 order: 100
 icon: /images/apps/calendar-2026.webp
 playPackage: com.calendar.sscalendar.holidaycalendar
+developer: "Calendar Planner App"
+developerUrl: https://play.google.com/store/apps/developer?id=Calendar+Planner+App
 summary: "Holiday calendar with events, reminders and home-screen widgets."
 features:
   - "Month calendar with national holidays by country"

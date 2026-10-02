@@ -16,7 +16,7 @@ Steps (details in CLAUDE.md):
 3. Check Google Play status with curl: `live` + `playPackage`, or `completed` / `in-progress`.
 4. Copy the icon to `public/images/apps/<slug>.png`, then run `npm run icons`.
 5. Create `content/projects/<slug>.md`: frontmatter per `src/content/schema.js`, plus a case-study body. No secrets, no invented facts.
-6. If live: `npm run screenshots -- <slug>`.
+6. If live: `npm run screenshots -- <slug>` and `npm run play-meta -- <slug>` (developer account name + link).
 7. Update `docs/PROJECTS.md`: Registry row, Totals, clear the Inbox line, Changelog line with today's date.
 8. Update the README "See all N apps" count.
 9. `npm run check` and `npm run build` must pass. Look at `dist/og/projects/<slug>.png`.
