@@ -17,6 +17,7 @@ const router = createRouter({
   scrollBehavior(to, from, saved) {
     if (saved) return saved
     if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    if (to.path === from.path) return false // query-only change (e.g. project filters)
     return { top: 0 }
   },
 })

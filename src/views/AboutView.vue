@@ -1,21 +1,27 @@
 <script setup>
-import { education, experience, profile, skills } from '../data/portfolio'
+import { computed, ref } from 'vue'
+import { education, experience, profile, projects, skills } from '../data/portfolio'
 import AppIcon from '../components/AppIcon.vue'
 import SectionHeading from '../components/SectionHeading.vue'
-import SkillBadge from '../components/SkillBadge.vue'
+import StatusBadge from '../components/StatusBadge.vue'
 import TimelineItem from '../components/TimelineItem.vue'
+
+// Tech explorer: pick a skill to see which apps use it.
+const usage = (skill) => projects.filter((p) => p.tags.includes(skill))
+const selected = ref('Jetpack Compose')
+const selectedProjects = computed(() => usage(selected.value))
 </script>
 
 <template>
   <div class="container-page py-16 sm:py-20">
     <section class="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
-      <div>
+      <div v-reveal>
         <SectionHeading eyebrow="// about" title="About me" />
         <div class="space-y-5 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
           <p v-for="(para, i) in profile.bio" :key="i">{{ para }}</p>
         </div>
       </div>
-      <aside class="card h-fit p-6">
+      <aside v-reveal="150" class="card h-fit p-6">
         <dl class="space-y-4 text-sm">
           <div>
             <dt class="text-slate-500">Role</dt>
@@ -30,38 +36,77 @@ import TimelineItem from '../components/TimelineItem.vue'
           <div>
             <dt class="text-slate-500">Email</dt>
             <dd>
-              <a :href="`mailto:${profile.email}`" class="font-medium text-brand-600 hover:underline dark:text-brand-400">
-                {{ profile.email }}
-              </a>
+              <a :href="`mailto:${profile.email}`" class="font-medium text-brand-600 hover:underline dark:text-brand-400">{{ profile.email }}</a>
             </dd>
           </div>
         </dl>
         <a v-if="profile.resumeUrl" :href="profile.resumeUrl" target="_blank" class="btn-primary mt-6 w-full justify-center">
           <AppIcon name="download" class="size-4" /> Download resume
         </a>
+        <RouterLink v-else to="/projects" class="btn-primary mt-6 w-full justify-center">
+          See my apps <AppIcon name="arrow" class="size-4" />
+        </RouterLink>
       </aside>
     </section>
 
     <section class="mt-20">
-      <SectionHeading eyebrow="// skills" title="Skills & tools" />
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <div v-for="g in skills" :key="g.group" class="card p-6">
-          <h3 class="mb-4 font-semibold">{{ g.group }}</h3>
-          <div class="flex flex-wrap gap-2">
-            <SkillBadge v-for="s in g.items" :key="s" :label="s" />
+      <SectionHeading v-reveal eyebrow="// skills" title="Tech explorer" subtitle="Click any technology to see the apps I've used it in." />
+      <div class="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div v-for="(g, i) in skills" :key="g.group" v-reveal="(i % 2) * 100" class="card p-5">
+            <h3 class="mb-3 text-sm font-semibold">{{ g.group }}</h3>
+            <div class="flex flex-wrap gap-1.5">
+              <button
+                v-for="s in g.items"
+                :key="s"
+                class="rounded-full px-2.5 py-1 text-xs font-medium transition"
+                :class="selected === s
+                  ? 'bg-brand-gradient text-white shadow-sm'
+                  : 'bg-brand-50 text-brand-700 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-400 dark:hover:bg-brand-500/20'"
+                @click="selected = s"
+              >
+                {{ s }}
+                <span v-if="usage(s).length" class="ml-0.5 opacity-60">{{ usage(s).length }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:sticky lg:top-24 lg:self-start">
+          <div class="card p-6">
+            <p class="font-mono text-xs text-slate-500">selected</p>
+            <h3 class="text-gradient mt-1 text-2xl font-bold">{{ selected }}</h3>
+            <p class="mt-1 text-sm text-slate-500">
+              Used in {{ selectedProjects.length }} {{ selectedProjects.length === 1 ? 'app' : 'apps' }}
+            </p>
+            <TransitionGroup tag="ul" name="page" class="mt-5 space-y-2">
+              <li v-for="p in selectedProjects" :key="p.slug">
+                <RouterLink
+                  :to="`/projects/${p.slug}`"
+                  class="flex items-center gap-3 rounded-xl p-2 transition hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                >
+                  <img v-if="p.icon" :src="p.icon" alt="" class="size-10 rounded-xl" />
+                  <span class="min-w-0 flex-1 truncate font-medium text-slate-900 dark:text-white">{{ p.title }}</span>
+                  <StatusBadge :status="p.status" />
+                </RouterLink>
+              </li>
+            </TransitionGroup>
+            <p v-if="!selectedProjects.length" class="mt-5 text-sm text-slate-500">
+              A general skill I use across projects rather than tied to one app.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
     <section class="mt-20 grid gap-16 lg:grid-cols-2">
-      <div>
+      <div v-reveal>
         <SectionHeading eyebrow="// experience" title="Experience" />
         <ol>
           <TimelineItem v-for="(e, i) in experience" :key="i" :item="e" />
         </ol>
       </div>
-      <div>
+      <div v-reveal="150">
         <SectionHeading eyebrow="// education" title="Education" />
         <ol>
           <TimelineItem v-for="(e, i) in education" :key="i" :item="e" />

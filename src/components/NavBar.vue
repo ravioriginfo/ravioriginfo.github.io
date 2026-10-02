@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { useDark, useToggle, useWindowScroll } from '@vueuse/core'
 import { nav, profile } from '../data/portfolio'
 import AppIcon from './AppIcon.vue'
+import { paletteOpen } from '../composables/palette'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
@@ -39,6 +40,14 @@ const isActive = (to) => (to === '/' ? route.path === '/' : route.path.startsWit
           {{ item.label }}
         </RouterLink>
         <button
+          class="ml-3 flex h-9 items-center gap-2 rounded-lg border border-slate-200 px-3 text-sm text-slate-500 transition hover:border-brand-400 hover:text-brand-600 dark:border-slate-800 dark:text-slate-400 dark:hover:text-brand-400"
+          aria-label="Search projects"
+          @click="paletteOpen = true"
+        >
+          <AppIcon name="search" class="size-4" /> Search
+          <kbd class="rounded border border-slate-300 px-1 font-mono text-[10px] dark:border-slate-700">Ctrl K</kbd>
+        </button>
+        <button
           class="ml-2 grid size-9 place-items-center rounded-md text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
           :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
           @click="toggleDark()"
@@ -48,6 +57,13 @@ const isActive = (to) => (to === '/' ? route.path === '/' : route.path.startsWit
       </div>
 
       <div class="flex items-center gap-1 md:hidden">
+        <button
+          class="grid size-10 place-items-center rounded-md text-slate-600 dark:text-slate-400"
+          aria-label="Search projects"
+          @click="paletteOpen = true"
+        >
+          <AppIcon name="search" class="size-5" />
+        </button>
         <button
           class="grid size-10 place-items-center rounded-md text-slate-600 dark:text-slate-400"
           :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"

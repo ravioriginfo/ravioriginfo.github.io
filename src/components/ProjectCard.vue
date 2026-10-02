@@ -1,40 +1,67 @@
 <script setup>
+import { computed, useTemplateRef } from 'vue'
+import { useMouseInElement } from '@vueuse/core'
 import SkillBadge from './SkillBadge.vue'
+import StatusBadge from './StatusBadge.vue'
 import AppIcon from './AppIcon.vue'
 
-defineProps({ project: { type: Object, required: true } })
+const props = defineProps({ project: { type: Object, required: true } })
+
+// Spotlight that follows the cursor across the card.
+const card = useTemplateRef('card')
+const { elementX, elementY, isOutside } = useMouseInElement(card)
+const spotlight = computed(() =>
+  isOutside.value
+    ? {}
+    : { background: `radial-gradient(320px circle at ${elementX.value}px ${elementY.value}px, rgb(16 185 129 / 0.12), transparent 70%)` },
+)
+const visibleTags = computed(() => props.project.tags.slice(0, 4))
 </script>
 
 <template>
-  <RouterLink
-    :to="`/projects/${project.slug}`"
-    class="card group flex flex-col overflow-hidden transition hover:-translate-y-1 hover:border-brand-400 hover:shadow-lg hover:shadow-brand-500/10"
-  >
-    <div class="aspect-[16/9] overflow-hidden bg-gradient-to-br from-brand-500 to-violet-600">
-      <img
-        v-if="project.image"
-        :src="project.image"
-        :alt="project.title"
-        loading="lazy"
-        class="size-full object-cover transition duration-300 group-hover:scale-105"
-      />
-      <div v-else class="grid size-full place-items-center font-mono text-2xl font-semibold text-white/90">
-        {{ project.title }}
+  <div ref="card" class="card group relative flex flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:border-brand-400 hover:shadow-xl hover:shadow-brand-500/10">
+    <div class="pointer-events-none absolute inset-0 transition-opacity" :style="spotlight" aria-hidden="true" />
+
+    <RouterLink :to="`/projects/${project.slug}`" class="relative flex flex-1 flex-col p-6 focus:outline-none">
+      <span class="absolute inset-0" aria-hidden="true" />
+      <div class="flex items-start justify-between gap-3">
+        <img
+          v-if="project.icon"
+          :src="project.icon"
+          :alt="`${project.title} icon`"
+          loading="lazy"
+          class="size-16 rounded-2xl shadow-md ring-1 ring-black/5 transition duration-300 group-hover:scale-105 group-hover:-rotate-3"
+        />
+        <div v-else class="bg-brand-gradient grid size-16 place-items-center rounded-2xl text-2xl font-bold text-white">
+          {{ project.title[0] }}
+        </div>
+        <StatusBadge :status="project.status" />
       </div>
-    </div>
-    <div class="flex flex-1 flex-col p-5">
-      <div class="mb-2 flex items-center justify-between text-xs text-slate-500">
-        <span>{{ project.category }}</span>
-        <span>{{ project.year }}</span>
-      </div>
-      <h3 class="text-lg font-semibold">{{ project.title }}</h3>
-      <p class="mt-2 flex-1 text-sm text-slate-600 dark:text-slate-400">{{ project.summary }}</p>
+
+      <p class="mt-5 text-xs font-medium tracking-wide text-brand-600 uppercase dark:text-brand-400">{{ project.type }}</p>
+      <h3 class="mt-1 text-lg font-semibold">{{ project.title }}</h3>
+      <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ project.summary }}</p>
+
       <div class="mt-4 flex flex-wrap gap-1.5">
-        <SkillBadge v-for="t in project.tags" :key="t" :label="t" />
+        <SkillBadge v-for="t in visibleTags" :key="t" :label="t" />
+        <span v-if="project.tags.length > 4" class="px-1 py-1 text-xs text-slate-500">+{{ project.tags.length - 4 }}</span>
       </div>
-      <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-brand-600 dark:text-brand-400">
-        View project <AppIcon name="arrow" class="size-4 transition group-hover:translate-x-1" />
-      </span>
+    </RouterLink>
+
+    <div class="relative flex items-center justify-between border-t border-slate-100 px-6 py-3 text-sm dark:border-slate-800">
+      <RouterLink :to="`/projects/${project.slug}`" class="inline-flex items-center gap-1 font-semibold text-brand-600 dark:text-brand-400">
+        Details <AppIcon name="arrow" class="size-4 transition group-hover:translate-x-1" />
+      </RouterLink>
+      <a
+        v-if="project.playUrl"
+        :href="project.playUrl"
+        target="_blank"
+        rel="noopener"
+        class="relative z-10 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"
+        :aria-label="`${project.title} on Google Play`"
+      >
+        <AppIcon name="play" class="size-4" /> Google Play
+      </a>
     </div>
-  </RouterLink>
+  </div>
 </template>

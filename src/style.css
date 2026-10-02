@@ -5,12 +5,16 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-400: #818cf8;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-300: #6ee7b7;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
 }
 
 @layer base {
@@ -34,7 +38,7 @@
 }
 
 @utility btn-primary {
-  @apply btn bg-brand-600 text-white hover:bg-brand-700;
+  @apply btn bg-brand-gradient text-white shadow-lg shadow-brand-500/25 hover:brightness-110;
 }
 
 @utility btn-ghost {
@@ -45,6 +49,56 @@
   @apply rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900;
 }
 
+@utility bg-brand-gradient {
+  background-image: linear-gradient(135deg, #10b981 0%, #22c55e 45%, #0d9488 100%);
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(90deg, #059669, #22c55e 50%, #0d9488);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  &:where(.dark, .dark *) {
+    background-image: linear-gradient(90deg, #34d399, #86efac 50%, #2dd4bf);
+  }
+}
+
+/* Scroll reveal (see src/directives/reveal.js) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.caret {
+  animation: blink 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .animate-marquee, .caret { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+.list-move,
 .page-enter-active,
 .page-leave-active {
   transition: opacity 0.2s ease, transform 0.2s ease;

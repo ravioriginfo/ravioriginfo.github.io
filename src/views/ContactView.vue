@@ -25,7 +25,7 @@ const input =
         <SectionHeading
           eyebrow="// contact"
           title="Get in touch"
-          subtitle="Have a project, a role, or a question? Send me a message and I'll get back to you."
+          subtitle="Need an Android app built, a role filled, or have a question about one of my apps? Send me a message."
         />
         <a
           :href="`mailto:${profile.email}`"
