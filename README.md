@@ -70,7 +70,7 @@ docs/POSTS.md       → list of articles (+ ideas to write next)
 publish.cmd         → double-click to publish
 ```
 
-**Safety net:** every publish runs `npm run check` first. If something's wrong (a missing or too-long field, an app or article missing from its list, a missing image, a secret key pasted in), it **stops and tells you exactly which file and line**, and nothing broken goes live.
+**Safety net:** every publish runs `npm run check` first. If something's wrong (a missing or too-long field, an app or article missing from its list, a missing image, a secret key pasted in), it **stops and tells you exactly which file and field**, and nothing broken goes live.
 
 ---
 
