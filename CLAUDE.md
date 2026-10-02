@@ -33,6 +33,7 @@ npm run icons          # normalise app icons to 256px WebP (+ PWA icons)
 npm run screenshots -- <slug>   # fetch a live app's screenshots from its own Google Play listing
 npm run og             # regenerate share images (+ README banner public/og.png)
 npm run play-meta -- <slug>     # record the Play developer (console) account of a live app
+npm run deploy -- "message"    # check → commit → push → wait for the deploy → verify live (also: publish.cmd)
 ```
 
 ## Workflows
@@ -90,6 +91,15 @@ Edit `content/projects/<slug>.md`. If title/status/type/featured/playPackage cha
 3. Write the article: an intro, `##` sections (they become the table of contents), simplified code snippets, and a takeaways section. Link apps as `/projects/<slug>`.
 4. **Update `docs/POSTS.md`:** add the Registry row (slug, title, `draft`, date, related apps), update Totals, remove the idea line, and add a Changelog line.
 5. `npm run check`, then let the owner review with `npm run dev` (or `npm run build:drafts`). **Only after the owner approves**, set `draft: false`, change the Registry status to `published`, add a Changelog line, then build, commit, push, and confirm `https://ravioriginfo.github.io/blog/<slug>` returns 200.
+
+## Publishing (always)
+
+The owner wants **every finished change published without being asked**. After any change:
+1. Commit it yourself with a clear message and the Co-Authored-By trailer.
+2. Run `npm run deploy`. It re-runs the check, pushes, waits for GitHub Actions, and verifies the live site. Use `npm run deploy -- --build` for code changes so the build is tested locally first.
+3. Report the live URL. If the deploy fails, fix it and run it again; never leave the site broken.
+
+The only exceptions: draft blog posts stay `draft: true` until the owner approves them (publishing the rest of the site is still fine), and anything outward-facing beyond this site (other repos, accounts) still needs the owner's OK.
 
 ## Rules
 

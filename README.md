@@ -89,6 +89,28 @@ You can also add a line to the **Inbox** in `docs/PROJECTS.md` and ask Claude to
 
 ---
 
+## 🚀 Publish (one command)
+
+After any change (an app, an article, your bio…), publish with **one** of:
+
+| How | Command |
+| --- | --- |
+| Terminal | `npm run deploy -- "what changed"` |
+| Double-click | **`publish.cmd`** in the project folder (asks what changed) |
+| Ask Claude | "publish it". Claude publishes automatically after every change anyway. |
+
+What it does ([`scripts/deploy.mjs`](scripts/deploy.mjs)):
+
+1. `npm run check`: stops if any content is invalid, so nothing broken gets pushed
+2. commits all changes with your message (skipped if nothing changed)
+3. pushes to GitHub, which triggers the deploy workflow
+4. **waits for the deploy** and tells you if it succeeded or failed (with a link)
+5. confirms https://ravioriginfo.github.io/ is live
+
+Options: `--build` builds locally first (catches errors before pushing) · `--no-wait` pushes and exits.
+
+---
+
 ## ✏️ How to update the site
 
 | I want to… | Edit this |
@@ -134,7 +156,7 @@ You can also add a line to the **Inbox** in `docs/PROJECTS.md` and ask Claude to
 
 3. **Screenshots & developer** (live apps): `npm run screenshots -- my-app` and `npm run play-meta -- my-app` pull them from the app's Google Play listing.
 4. **Registry:** add a row to [`docs/PROJECTS.md`](docs/PROJECTS.md), then run `npm run check`.
-5. **Publish:** `git add -A`, `git commit -m "Add My App"`, `git push`. The site rebuilds in about 2 minutes.
+5. **Publish:** `npm run deploy -- "Add My App"` (or double-click `publish.cmd`).
 
 ### 📝 Still to fill in
 
@@ -159,6 +181,7 @@ npm run icons          # normalise app icons (+ PWA icons)
 npm run screenshots -- <slug>   # fetch Google Play screenshots for an app
 npm run og             # regenerate share images (+ this README's banner)
 npm run play-meta -- <slug>     # fetch the Play developer (console) name for an app
+npm run deploy -- "message"    # publish: check → commit → push → wait → verify
 ```
 
 ---
@@ -169,6 +192,7 @@ npm run play-meta -- <slug>     # fetch the Play developer (console) name for an
 ├── .claude/commands/              # /add-project, /remove-project, /new-post for Claude Code
 ├── .github/workflows/deploy.yml   # check + build + deploy to GitHub Pages on push to main
 ├── CLAUDE.md                      # AI agent rules + workflows
+├── publish.cmd                    # double-click to publish the site
 ├── content/
 │   ├── projects/*.md              # ⭐ one file per app: data + case study
 │   └── blog/*.md                  # ⭐ Dev Notes articles
@@ -186,7 +210,9 @@ npm run play-meta -- <slug>     # fetch the Play developer (console) name for an
 │   ├── og.mjs                     # share images (satori + resvg)
 │   ├── rss.mjs                    # RSS / Atom feeds
 │   ├── icons.mjs                  # icon normalisation + PWA icons
-│   └── fetch-screenshots.mjs      # Google Play screenshots
+│   ├── fetch-screenshots.mjs      # Google Play screenshots
+│   ├── play-meta.mjs              # Play developer (console) name
+│   └── deploy.mjs                 # one-command publish (npm run deploy / publish.cmd)
 ├── src/
 │   ├── content/                   # schema (zod) + browser loader for content/
 │   ├── data/portfolio.js          # profile, skills, experience, nav

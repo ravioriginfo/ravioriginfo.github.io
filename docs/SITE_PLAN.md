@@ -120,7 +120,7 @@ Profile, socials, skills, experience and education are in [`src/data/portfolio.j
 | Routes, sitemap, RSS, share images | Generated from the content in `vite.config.js` (`includedRoutes`, `onFinished`) |
 | Images | `npm run icons` (icons), `npm run screenshots` (Play screenshots), `vite-plugin-image-optimizer` at build |
 | Check | `npm run check` → [`scripts/check-content.mjs`](../scripts/check-content.mjs) |
-| Deploy | Push to `main` → Actions: `npm ci` → `npm run check` → `npm run build` → GitHub Pages |
+| Deploy | `npm run deploy -- "message"` (or `publish.cmd`): check → commit → push → Actions (`npm ci` → `npm run check` → `npm run build` → GitHub Pages) → waits and verifies the live site |
 
 **SSR safety:** no `window`/`document` during setup (use `onMounted`, handlers, `typeof document` guards).
 
@@ -173,6 +173,7 @@ Newest first. Record decisions that a future agent might otherwise undo.
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-02 | One-command publishing (`npm run deploy` / `publish.cmd`). Claude publishes every finished change automatically (owner preference). |
 | 2026-10-02 | Each live app shows its publishing Google Play developer account ("by …") on cards, the app page and share images. |
 | 2026-10-02 | Articles get their own registry, `docs/POSTS.md`, checked by `npm run check` like `PROJECTS.md`. |
 | 2026-10-02 | **Content-driven:** projects and posts are Markdown files validated by zod; the old hard-coded `projects` array was removed. |
