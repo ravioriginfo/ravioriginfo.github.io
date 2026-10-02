@@ -12,7 +12,8 @@
     "og": "node scripts/og.mjs",
     "screenshots": "node scripts/fetch-screenshots.mjs",
     "build:drafts": "cross-env VITE_DRAFTS=1 vite-ssg build",
-    "play-meta": "node scripts/play-meta.mjs"
+    "play-meta": "node scripts/play-meta.mjs",
+    "deploy": "node scripts/deploy.mjs"
   },
   "dependencies": {
     "@unhead/vue": "^2.1.17",
