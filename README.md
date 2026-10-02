@@ -33,9 +33,44 @@
 | 📱 All apps (search + filters) | https://ravioriginfo.github.io/projects |
 | 🟢 Only apps live on Google Play | https://ravioriginfo.github.io/projects?status=live |
 | 📄 Flagship — PDF Reader & Editor | https://ravioriginfo.github.io/projects/pdf-reader |
+| 📝 Dev Notes (blog) | https://ravioriginfo.github.io/blog |
+| 📡 RSS feed | https://ravioriginfo.github.io/blog/rss.xml |
 | ✉️ Contact | https://ravioriginfo.github.io/contact |
 
 > 💡 **Tip:** press <kbd>Ctrl</kbd> + <kbd>K</kbd> anywhere on the site to search every app and article.
+
+---
+
+## 📖 Quick guide: how do I…?
+
+**The easiest way to do anything:** open Claude Code in this folder and say it in plain words. Claude makes the change, checks it, **publishes it automatically**, and gives you the link.
+
+| I want to… | Ask Claude | Or do it yourself |
+| --- | --- | --- |
+| **Publish my changes** | "publish it" | Double-click **`publish.cmd`**, or run `npm run deploy -- "what changed"` |
+| **Add an app** from my workspace | `/add-project producation/MyApp` | See [Add a new app by hand](#-add-a-new-app-by-hand) |
+| **Add an app** that's only on Google Play | "add this app: <Play Store link>" | Same as above, using the listing for details |
+| **Remove an app** | `/remove-project <app>` | Delete its `.md` file + icon, move its row to *Excluded* in `docs/PROJECTS.md` |
+| **Write an article** | `/new-post <topic>` (saved as a draft) | Create `content/blog/<name>.md` with `draft: true` |
+| **Publish a draft article** | "publish the article <name>" | Change `draft: true` → `draft: false`, then publish |
+| **Plan article ideas** | "write the next article from the ideas list" | Add a line under **Ideas** in [`docs/POSTS.md`](docs/POSTS.md) |
+| **Change my bio, email, skills, job** | "change my bio to …" | Edit [`src/data/portfolio.js`](src/data/portfolio.js), then publish |
+| **Update an app's screenshots** | "refresh screenshots for <app>" | `npm run screenshots -- <app>`, then publish |
+| **Preview before publishing** | "show me locally" | `npm run dev` → open http://localhost:5173 |
+| **See what's on the site** | "what apps/articles are on the site?" | [`docs/PROJECTS.md`](docs/PROJECTS.md) (apps) · [`docs/POSTS.md`](docs/POSTS.md) (articles) |
+
+**Where things live:**
+
+```
+content/projects/   → one .md file per app      (what each app page shows)
+content/blog/       → one .md file per article  (draft: true = hidden until you publish)
+src/data/portfolio.js → your name, bio, email, skills, experience
+docs/PROJECTS.md    → list of apps on the site (+ removed ones, so they never come back)
+docs/POSTS.md       → list of articles (+ ideas to write next)
+publish.cmd         → double-click to publish
+```
+
+**Safety net:** every publish runs `npm run check` first. If something's wrong (a missing or too-long field, an app or article missing from its list, a missing image, a secret key pasted in), it **stops and tells you exactly which file and line**, and nothing broken goes live.
 
 ---
 
@@ -160,9 +195,12 @@ Options: `--build` builds locally first (catches errors before pushing) · `--no
 
 ### 📝 Still to fill in
 
-- [ ] Company & dates in `experience`, and `education`
+- [x] ~~Contact email~~ (done)
+- [x] ~~Publish the first articles~~ (done: 3 live)
+- [ ] Company & dates in `experience`, and `education` (in `src/data/portfolio.js`)
 - [ ] LinkedIn / other profiles in `socials`
 - [ ] Optional: `public/resume.pdf`, then set `resumeUrl: '/resume.pdf'`
+- [ ] Google Search Console: verify the site and submit `sitemap.xml` (see [SEO](#-seo))
 
 ---
 
@@ -226,7 +264,7 @@ npm run deploy -- "message"    # publish: check → commit → push → wait →
 
 ---
 
-## 🚀 Deployment
+## ⚙️ How deployment works
 
 Hosted on **GitHub Pages** at **https://ravioriginfo.github.io/**.
 
