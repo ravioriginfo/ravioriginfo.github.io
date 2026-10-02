@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -61,6 +62,31 @@
   &:where(.dark, .dark *) {
     background-image: linear-gradient(90deg, #34d399, #86efac 50%, #2dd4bf);
   }
+}
+
+/* Markdown content (case studies, blog posts) */
+@utility prose-site {
+  @apply prose prose-slate max-w-none dark:prose-invert prose-headings:scroll-mt-24 prose-headings:font-bold prose-headings:tracking-tight prose-a:text-brand-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-900 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:rounded-xl prose-pre:border prose-pre:border-slate-200 prose-li:marker:text-brand-500 dark:prose-a:text-brand-400 dark:prose-strong:text-white dark:prose-code:bg-slate-800 dark:prose-pre:border-slate-800;
+}
+/* Heading anchors: the whole heading links to itself */
+.markdown-body :is(h2, h3) > a.header-anchor {
+  color: inherit;
+  text-decoration: none;
+}
+.markdown-body :is(h2, h3) > a.header-anchor:hover::after {
+  content: ' #';
+  color: var(--color-brand-500);
+}
+/* Shiki dual themes (light by default, dark under .dark) */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
 }
 
 /* Scroll reveal (see src/directives/reveal.js) */

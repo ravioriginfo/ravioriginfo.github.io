@@ -25,7 +25,7 @@ const selectedProjects = computed(() => usage(selected.value))
   <div class="container-page py-16 sm:py-20">
     <section class="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
       <div v-reveal>
-        <SectionHeading eyebrow="// about" title="About me" />
+        <SectionHeading as="h1" eyebrow="// about" title="About me" />
         <div class="space-y-5 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
           <p v-for="(para, i) in profile.bio" :key="i">{{ para }}</p>
         </div>

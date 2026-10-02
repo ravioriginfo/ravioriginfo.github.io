@@ -30,6 +30,7 @@ const input =
     <div class="grid gap-12 lg:grid-cols-2">
       <div>
         <SectionHeading
+          as="h1"
           eyebrow="// contact"
           title="Get in touch"
           subtitle="Need an Android app built, a role filled, or have a question about one of my apps? Send me a message."

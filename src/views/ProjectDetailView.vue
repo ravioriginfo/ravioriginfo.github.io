@@ -1,12 +1,14 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import { projects, profile, SITE_URL, statuses } from '../data/portfolio'
 import { personSchema, useSeo } from '../composables/seo'
+import { useInternalLinks } from '../composables/internalLinks'
 import AppIcon from '../components/AppIcon.vue'
 import SkillBadge from '../components/SkillBadge.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import GooglePlayBadge from '../components/GooglePlayBadge.vue'
+import ScreenshotGallery from '../components/ScreenshotGallery.vue'
 import NotFoundView from './NotFoundView.vue'
 
 const props = defineProps({ slug: { type: String, required: true } })
@@ -20,6 +22,8 @@ const related = computed(() =>
 )
 
 const tab = ref('features')
+const caseStudy = useTemplateRef('caseStudy')
+useInternalLinks(computed(() => caseStudy.value?.$el))
 const { copy, copied } = useClipboard({ copiedDuring: 1600 })
 const copyLink = () => copy(window.location.href)
 
@@ -38,7 +42,7 @@ if (p) {
     title: `${p.title} — Android App (${p.type})`,
     description: `${p.summary} ${p.playUrl ? 'Available on Google Play.' : statuses[p.status].label + '.'} Built with ${p.tags.slice(0, 4).join(', ')}.`,
     path: `/projects/${p.slug}`,
-    image: p.icon,
+    image: `/og/projects/${p.slug}.png`,
     type: 'article',
     jsonLd: [
       {
@@ -110,6 +114,8 @@ if (p) {
     </header>
 
     <div class="container-page max-w-5xl py-12">
+      <ScreenshotGallery v-if="project.screenshots?.length" :shots="project.screenshots" :title="project.title" class="mb-14" />
+
       <div class="grid gap-10 lg:grid-cols-[1fr_17rem]">
         <!-- Tabs -->
         <section>
@@ -147,6 +153,12 @@ if (p) {
           <p v-if="project.variants" class="mt-6 rounded-xl border border-dashed border-slate-300 p-4 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-400">
             <strong class="text-slate-900 dark:text-white">Variants:</strong> {{ project.variants }}
           </p>
+
+          <!-- Case study: the Markdown body of content/projects/<slug>.md -->
+          <div class="mt-14">
+            <p class="font-mono text-sm text-brand-600 dark:text-brand-400">// case study</p>
+            <component :is="project.Body" ref="caseStudy" class="prose-site mt-2" />
+          </div>
         </section>
 
         <!-- Sidebar -->

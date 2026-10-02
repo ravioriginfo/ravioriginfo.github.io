@@ -1,8 +1,9 @@
 import { computed, toValue } from 'vue'
 import { useHead } from '@unhead/vue'
-import { profile, SITE_URL, socials } from '../data/portfolio'
+import { posts, profile, SITE_URL, socials } from '../data/portfolio'
 
-const DEFAULT_IMAGE = `${SITE_URL}/og.png`
+// Generated at build time by scripts/og.mjs.
+const DEFAULT_IMAGE = `${SITE_URL}/og/default.png`
 
 export const personSchema = {
   '@type': 'Person',
@@ -20,7 +21,7 @@ export const personSchema = {
  * Per-page SEO: title, description, canonical URL, Open Graph, Twitter card
  * and optional JSON-LD. Arguments may be plain values, refs or getters.
  */
-export function useSeo({ title, description, path = '/', image, type = 'website', jsonLd, noindex = false }) {
+export function useSeo({ title, description, path = '/', image, type = 'website', jsonLd, noindex = false, publishedTime }) {
   const url = computed(() => SITE_URL + toValue(path))
   const fullTitle = computed(() => {
     const t = toValue(title)
@@ -34,7 +35,12 @@ export function useSeo({ title, description, path = '/', image, type = 'website'
 
   useHead({
     title: fullTitle,
-    link: [{ rel: 'canonical', href: url }],
+    link: [
+      { rel: 'canonical', href: url },
+      ...(posts.some((p) => !p.draft)
+        ? [{ rel: 'alternate', type: 'application/rss+xml', title: `${profile.name} — Dev Notes`, href: `${SITE_URL}/blog/rss.xml` }]
+        : []),
+    ],
     meta: [
       { name: 'description', content: desc },
       { name: 'author', content: profile.name },
@@ -46,10 +52,13 @@ export function useSeo({ title, description, path = '/', image, type = 'website'
       { property: 'og:description', content: desc },
       { property: 'og:url', content: url },
       { property: 'og:image', content: img },
-      { name: 'twitter:card', content: computed(() => (toValue(image) ? 'summary' : 'summary_large_image')) },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: fullTitle },
       { name: 'twitter:description', content: desc },
       { name: 'twitter:image', content: img },
+      ...(publishedTime ? [{ property: 'article:published_time', content: publishedTime }, { property: 'article:author', content: profile.name }] : []),
     ],
     script: jsonLd
       ? [

@@ -7,14 +7,14 @@ Remove a project from the portfolio site, following **CLAUDE.md â†’ Workflows â†
 
 Input: $ARGUMENTS
 
-1. Find the entry in `src/data/portfolio.js` by slug or title. If it's ambiguous, ask.
-2. Delete the entry and its icon in `public/images/apps/`.
+1. Find `content/projects/<slug>.md` by slug or title. If it's ambiguous, ask.
+2. Delete that file, `public/images/apps/<slug>.webp` and the `public/images/apps/<slug>/` screenshots folder.
 3. In `docs/PROJECTS.md`:
    - move the Registry row to **Excluded**, with the reason (default "owner asked to remove") and today's date
    - update Totals
    - add a Changelog line
-4. If it was featured, promote another app so exactly 4 stay featured. Tell the owner which one.
-5. Update the README "See all N apps" count and any texts that mention the app counts.
+4. If it was featured, promote another app (`featured: true`) so exactly 4 stay featured. Tell the owner which one.
+5. Remove the slug from any blog post's `relatedProjects`, and update the README "See all N apps" count.
 6. `npm run check` and `npm run build` must pass.
 7. Commit, push to `main`, wait for the deploy, and confirm the old URL `https://ravioriginfo.github.io/projects/<slug>` returns 404.
 

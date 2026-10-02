@@ -1,38 +1,97 @@
-// Shared fuzzy-ish search used by the command palette and the Projects page.
-// Every word in the query must appear somewhere (in any order), and results
-// are ranked so title matches beat type/tech matches, which beat body text.
+// Full-text search (MiniSearch) over pages, apps and blog posts, used by the
+// Ctrl+K palette and the Projects page. The index and the raw Markdown bodies
+// are loaded lazily on first search, so none of it is in the main bundle.
+import { nav, posts, projects } from '../data/portfolio'
 
-const normalize = (s) => s.toLowerCase().replace(/[^a-z0-9+#.]+/g, ' ').trim()
+const projectRaw = import.meta.glob('/content/projects/*.md', { query: '?raw', import: 'default' })
+const postRaw = import.meta.glob('/content/blog/*.md', { query: '?raw', import: 'default' })
 
-export const tokenize = (q) => normalize(q).split(' ').filter(Boolean)
+// Plain text from Markdown: drop frontmatter, code fences, markup.
+const plain = (md) =>
+  md
+    .replace(/^---[\s\S]*?---/, '')
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[#>*_|~-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 
-/**
- * @param {{ title: string, keywords?: string[], text?: string[] }} fields
- * @param {string[]} tokens
- * @returns {number} 0 = no match, higher = more relevant
- */
-export function score({ title, keywords = [], text = [] }, tokens) {
-  if (!tokens.length) return 1
-  const t = normalize(title)
-  const k = normalize(keywords.join(' '))
-  const b = normalize(text.join(' '))
-  let total = 0
-  for (const tok of tokens) {
-    let s = 0
-    if (t.split(' ').some((w) => w.startsWith(tok))) s = 10
-    else if (t.includes(tok)) s = 7
-    else if (k.split(' ').some((w) => w.startsWith(tok))) s = 4
-    else if (k.includes(tok)) s = 3
-    else if (b.includes(tok)) s = 1
-    if (!s) return 0 // every word must match somewhere
-    total += s
-  }
-  if (t.startsWith(tokens.join(' '))) total += 5 // whole query is a title prefix
-  return total
+const rawFor = (globs, kind, slug) => globs[`/content/${kind}/${slug}.md`]?.() ?? Promise.resolve('')
+
+let indexPromise
+function getIndex() {
+  indexPromise ??= (async () => {
+    const { default: MiniSearch } = await import('minisearch')
+    const docs = [
+      ...nav.map((n) => ({ id: `page:${n.to}`, kind: 'page', title: n.label, keywords: 'page', summary: '', text: '', to: n.to })),
+      ...(await Promise.all(
+        projects.map(async (p) => ({
+          id: `app:${p.slug}`,
+          kind: 'app',
+          slug: p.slug,
+          title: p.title,
+          keywords: [p.slug.replace(/-/g, ' '), p.type, ...p.tags].join(' '),
+          summary: p.summary,
+          text: [...p.features, ...p.highlights, plain(await rawFor(projectRaw, 'projects', p.slug))].join(' '),
+          to: `/projects/${p.slug}`,
+        })),
+      )),
+      ...(await Promise.all(
+        posts.map(async (p) => ({
+          id: `post:${p.slug}`,
+          kind: 'post',
+          slug: p.slug,
+          title: p.title,
+          keywords: p.tags.join(' '),
+          summary: p.description,
+          text: plain(await rawFor(postRaw, 'blog', p.slug)),
+          to: `/blog/${p.slug}`,
+        })),
+      )),
+    ]
+    const ms = new MiniSearch({
+      fields: ['title', 'keywords', 'summary', 'text'],
+      storeFields: ['kind', 'slug', 'title', 'summary', 'text', 'to'],
+      searchOptions: {
+        boost: { title: 4, keywords: 2, summary: 1.5 },
+        prefix: true,
+        fuzzy: (term) => (term.length > 3 ? 0.2 : false),
+        combineWith: 'AND',
+      },
+    })
+    ms.addAll(docs)
+    return ms
+  })()
+  return indexPromise
 }
 
-export const projectFields = (p) => ({
-  title: p.title,
-  keywords: [p.slug.replace(/-/g, ' '), p.type, ...p.tags],
-  text: [p.summary, ...p.features, ...(p.highlights ?? [])],
-})
+/** Short text around the first matched term, for result previews. */
+function snippet(hit) {
+  const source = hit.summary || ''
+  const body = hit.text || ''
+  const term = hit.terms[0]
+  if (!term || source.toLowerCase().includes(term)) return source
+  const i = body.toLowerCase().indexOf(term)
+  if (i < 0) return source
+  const start = Math.max(0, i - 50)
+  return (start ? '…' : '') + body.slice(start, i + 90).trim() + '…'
+}
+
+/**
+ * @param {string} query
+ * @param {{ kind?: 'page'|'app'|'post' }} [opts]
+ * @returns {Promise<Array<{ id, kind, slug, title, to, snippet, score }>>}
+ */
+export async function search(query, { kind } = {}) {
+  const q = query.trim()
+  if (!q) return []
+  const ms = await getIndex()
+  let hits = ms.search(q, kind ? { filter: (r) => r.kind === kind } : undefined)
+  // Fall back to OR when no document matches every word.
+  if (!hits.length) hits = ms.search(q, { combineWith: 'OR', ...(kind && { filter: (r) => r.kind === kind }) })
+  return hits.map((h) => ({ id: h.id, kind: h.kind, slug: h.slug, title: h.title, to: h.to, snippet: snippet(h), score: h.score }))
+}
+
+/** Warm the index (e.g. when the palette opens) so the first keystroke is instant. */
+export const preloadSearch = () => void getIndex()

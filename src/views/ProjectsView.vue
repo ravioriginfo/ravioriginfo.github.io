@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { projects, statuses, types } from '../data/portfolio'
 import AppIcon from '../components/AppIcon.vue'
@@ -7,11 +7,11 @@ import ProjectCard from '../components/ProjectCard.vue'
 import SectionHeading from '../components/SectionHeading.vue'
 import { SITE_URL } from '../data/portfolio'
 import { useSeo } from '../composables/seo'
-import { projectFields, score, tokenize } from '../utils/search'
+import { search } from '../utils/search'
 
 useSeo({
   title: 'Android Apps & Projects',
-  description: `${projects.length} Android apps by Ravi Sorathiya: phone dialers, SMS messengers, photo galleries, calendar, alarm clock and a PDF editor — 11 live on Google Play.`,
+  description: `${projects.length} Android apps by Ravi Sorathiya: phone dialers, SMS messengers, photo galleries, calendar, alarm clock and a PDF editor — ${projects.filter((p) => p.status === 'live').length} live on Google Play.`,
   path: '/projects',
   jsonLd: [
     {
@@ -43,19 +43,28 @@ const type = queryRef('type')
 const order = { 'in-progress': 0, live: 1, completed: 2 }
 const sorted = [...projects].sort((a, b) => order[a.status] - order[b.status])
 
-function matches(p, { q: text = q.value, s = status.value, t = type.value } = {}) {
-  return score(projectFields(p), tokenize(text)) > 0 && (!s || p.status === s) && (!t || p.type === t)
+// Full-text search (MiniSearch, async): slug -> rank of the current query's matches.
+const rank = ref(null)
+let requestId = 0
+watch(
+  q,
+  async (text) => {
+    const id = ++requestId
+    if (!text.trim()) return (rank.value = null)
+    const hits = await search(text, { kind: 'app' })
+    if (id === requestId) rank.value = new Map(hits.map((h, i) => [h.slug, i]))
+  },
+  { immediate: true },
+)
+
+function matches(p, { s = status.value, t = type.value } = {}) {
+  return (!rank.value || rank.value.has(p.slug)) && (!s || p.status === s) && (!t || p.type === t)
 }
 
 // With a search query, most relevant first; otherwise in-progress → live → completed.
 const filtered = computed(() => {
-  const tokens = tokenize(q.value)
   const list = sorted.filter((p) => matches(p))
-  if (!tokens.length) return list
-  return list
-    .map((p, i) => ({ p, i, s: score(projectFields(p), tokens) }))
-    .sort((a, b) => b.s - a.s || a.i - b.i)
-    .map((r) => r.p)
+  return rank.value ? list.sort((a, b) => rank.value.get(a.slug) - rank.value.get(b.slug)) : list
 })
 const statusCount = (s) => projects.filter((p) => matches(p, { s })).length
 const typeCount = (t) => projects.filter((p) => matches(p, { t })).length
@@ -74,6 +83,7 @@ const pill = (on) =>
 <template>
   <div class="container-page py-16 sm:py-20">
     <SectionHeading
+      as="h1"
       v-reveal
       eyebrow="// projects"
       title="Apps I've built"

@@ -1,12 +1,13 @@
 <script setup>
 import { computed } from 'vue'
-import { profile, projects, skills, socials, stats } from '../data/portfolio'
+import { posts, profile, projects, skills, socials, stats } from '../data/portfolio'
 import AppIcon from '../components/AppIcon.vue'
 import CountUp from '../components/CountUp.vue'
 import IconMarquee from '../components/IconMarquee.vue'
 import ProjectCard from '../components/ProjectCard.vue'
 import SectionHeading from '../components/SectionHeading.vue'
 import SkillBadge from '../components/SkillBadge.vue'
+import PostCard from '../components/PostCard.vue'
 import TypeWriter from '../components/TypeWriter.vue'
 import { paletteOpen } from '../composables/palette'
 import { personSchema, useSeo } from '../composables/seo'
@@ -155,6 +156,21 @@ const heroIcons = projects.filter((p) => p.icon && p.status === 'live').slice(0,
                 See how it's built <AppIcon name="arrow" class="size-4" />
               </RouterLink>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest notes -->
+    <section v-if="posts.length" class="pb-20">
+      <div class="container-page">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading v-reveal eyebrow="// dev notes" title="Latest notes" subtitle="How I build things: deep dives from real apps." />
+          <RouterLink to="/blog" class="btn-ghost mb-10">All notes</RouterLink>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div v-for="(p, i) in posts.slice(0, 3)" :key="p.slug" v-reveal="i * 100" class="flex">
+            <PostCard :post="p" class="w-full" />
           </div>
         </div>
       </div>

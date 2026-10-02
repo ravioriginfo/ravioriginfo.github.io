@@ -16,6 +16,8 @@
 ![Vue](https://img.shields.io/badge/Vue_3-35495E?logo=vuedotjs&logoColor=4FC08D)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v4-0F172A?logo=tailwindcss&logoColor=38BDF8)
+![Markdown](https://img.shields.io/badge/Content-Markdown-000?logo=markdown&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?logo=pwa&logoColor=white)
 ![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222?logo=githubpages&logoColor=white)
 
 </div>
@@ -33,7 +35,7 @@
 | 📄 Flagship — PDF Reader & Editor | https://ravioriginfo.github.io/projects/pdf-reader |
 | ✉️ Contact | https://ravioriginfo.github.io/contact |
 
-> 💡 **Tip:** press <kbd>Ctrl</kbd> + <kbd>K</kbd> anywhere on the site to search every app.
+> 💡 **Tip:** press <kbd>Ctrl</kbd> + <kbd>K</kbd> anywhere on the site to search every app and article.
 
 ---
 
@@ -41,8 +43,8 @@
 
 | | App | What it is | Status |
 | :---: | --- | --- | --- |
-| <img src="public/images/apps/pdf-reader.png" width="48" /> | [**PDF Reader & Editor**](https://ravioriginfo.github.io/projects/pdf-reader) | Annotate, sign, edit text, lock, convert & scan PDFs | 🟠 In progress |
-| <img src="public/images/apps/phone-call.png" width="48" /> | [**Phone Call**](https://ravioriginfo.github.io/projects/phone-call) | Default dialer with spam blocking & call themes | 🟢 [Google Play](https://play.google.com/store/apps/details?id=com.phonecall.phone.contact.callerdialer) |
+| <img src="public/images/apps/pdf-reader.webp" width="48" /> | [**PDF Reader & Editor**](https://ravioriginfo.github.io/projects/pdf-reader) | Annotate, sign, edit text, lock, convert & scan PDFs | 🟠 In progress |
+| <img src="public/images/apps/phone-call.webp" width="48" /> | [**Phone Call**](https://ravioriginfo.github.io/projects/phone-call) | Default dialer with spam blocking & call themes | 🟢 [Google Play](https://play.google.com/store/apps/details?id=com.phonecall.phone.contact.callerdialer) |
 | <img src="public/images/apps/messages-compose.webp" width="48" /> | [**Messages**](https://ravioriginfo.github.io/projects/messages-compose) | Default SMS & MMS app built in Jetpack Compose | 🟢 [Google Play](https://play.google.com/store/apps/details?id=com.message.textmessenger.smsapp) |
 | <img src="public/images/apps/gallery-pro.webp" width="48" /> | [**Gallery - Photo Gallery**](https://ravioriginfo.github.io/projects/gallery-pro) | Compose gallery with timeline, editor & photo picker | 🟢 [Google Play](https://play.google.com/store/apps/details?id=com.gallery.picturegalleryapp.gallerypro) |
 
@@ -52,12 +54,13 @@
 
 ## ✨ What's on the site
 
-- **Search & filters:** find apps by name, feature or tech. Filters live in the URL, so you can share a filtered view.
-- **Command palette:** <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd> jumps to any app or page.
-- **Project pages:** features, an "under the hood" tech breakdown, a Google Play link, related apps, prev/next.
+- **Content-driven:** every app and article is a Markdown file in [`content/`](content), validated on every build.
+- **App pages:** Google Play screenshots with a zoomable lightbox, a features / under-the-hood breakdown, a written case study, and a Google Play badge.
+- **Dev Notes (blog):** technical articles with a table of contents, code highlighting and an RSS feed. The blog appears once the first article is published.
+- **Search:** typo-tolerant full-text search across apps and articles. Use <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd> anywhere, or the Projects page (filters live in the URL).
 - **Tech explorer:** click any technology on the About page to see which apps use it.
-- **Polish:** typewriter hero, count-up stats, icon marquee, scroll reveal, cursor spotlight, dark mode.
-- **SEO-ready:** every page is pre-rendered HTML with meta tags, structured data and a sitemap.
+- **Installable & offline (PWA)**, with optimised WebP images.
+- **SEO:** pre-rendered HTML, structured data, sitemap, and an **auto-generated share image for every page**.
 
 ---
 
@@ -68,75 +71,75 @@ This site is maintained with Claude Code. The plan and project tracking live in 
 | File | Purpose |
 | --- | --- |
 | [`CLAUDE.md`](CLAUDE.md) | Rules and step-by-step workflows that AI agents follow |
-| [`docs/SITE_PLAN.md`](docs/SITE_PLAN.md) | Site plan: pages, content rules, design system, SEO, backlog, decision log |
+| [`docs/SITE_PLAN.md`](docs/SITE_PLAN.md) | Site plan: pages, content model, design system, SEO, search, PWA, backlog, decision log |
 | [`docs/PROJECTS.md`](docs/PROJECTS.md) | Project registry: 📥 Inbox, ✅ on site, 🚫 excluded, 📝 changelog |
 
-**Add a new app the easy way:**
+**Claude Code commands:**
 
-```text
-/add-project producation/MyNewApp
-```
+| Command | What it does |
+| --- | --- |
+| `/add-project producation/MyNewApp` | Reads the app's source, checks Google Play, adds icon + screenshots + a case study, updates the registry, publishes |
+| `/remove-project <slug>` | Removes an app and records it as **Excluded** so it's never re-added |
+| `/new-post <topic>` | Drafts a Dev Notes article from the real source code (stays a draft until you approve it) |
 
-Or add a line to the **Inbox** in `docs/PROJECTS.md` and ask Claude to *"process the project inbox"*.
-Claude reads the app's source, checks Google Play, copies the icon, adds it to the site, updates the registry, and publishes.
+You can also add a line to the **Inbox** in `docs/PROJECTS.md` and ask Claude to *"process the project inbox"*.
 
-To remove one: `/remove-project <slug>`. It moves to **Excluded** so it never gets re-added by mistake.
-
-`npm run check` (also run in CI before every deploy) blocks a deploy if the registry and the site data disagree.
+`npm run check` (also run in CI before every deploy) blocks a deploy if any content file is invalid, the registry and content disagree, or a secret slipped in.
 
 ---
 
 ## ✏️ How to update the site
 
-Almost everything is in **one file: [`src/data/portfolio.js`](src/data/portfolio.js)**.
-
 | I want to… | Edit this |
 | --- | --- |
-| Change my name, bio, email, tagline | `profile` |
-| Add LinkedIn / X / other links | `socials` |
-| Update skills | `skills` |
-| Add a job or education entry | `experience` / `education` |
-| Add, edit or remove an app | `projects` |
+| Add / edit an app | `content/projects/<slug>.md` (+ a row in `docs/PROJECTS.md`) |
+| Write / publish an article | `content/blog/<slug>.md` (set `draft: false` to publish) |
+| Change my name, bio, email, socials, skills, experience | [`src/data/portfolio.js`](src/data/portfolio.js) |
 | Change the colour theme | `--color-brand-*` in [`src/style.css`](src/style.css) |
 
-### ➕ Add a new app by hand (4 steps)
+### ➕ Add a new app by hand
 
-1. **Put the icon** in `public/images/apps/`, e.g. `my-app.png` (512×512 works best).
-2. **Add an entry** to `projects` in `src/data/portfolio.js`:
+1. **Icon:** put it at `public/images/apps/my-app.png`, then run `npm run icons` (converts it to a 256px WebP).
+2. **Content:** create `content/projects/my-app.md` (the file name becomes the URL `/projects/my-app`):
 
-   ```js
-   {
-     slug: 'my-app',                       // URL → /projects/my-app
-     title: 'My App',
-     type: 'Productivity',                 // Messaging | Dialer & Contacts | Gallery & Media | Productivity | Social
-     status: 'live',                       // live | completed | in-progress
-     featured: false,                      // true = show on the home page
-     icon: '/images/apps/my-app.png',
-     playUrl: play('com.example.myapp'),   // omit if not on Google Play
-     summary: 'One sentence about the app.',
-     features: ['Feature one', 'Feature two'],
-     highlights: ['Interesting technical detail'],
-     tags: ['Kotlin', 'Jetpack Compose', 'Room'],
-   },
+   ```markdown
+   ---
+   title: "My App"
+   type: "Productivity"          # Messaging | Dialer & Contacts | Gallery & Media | Productivity | Social
+   status: live                  # live | completed | in-progress
+   featured: false               # true = show on the home page (keep exactly 4)
+   order: 50
+   icon: /images/apps/my-app.webp
+   playPackage: com.example.myapp   # omit if not on Google Play
+   summary: "One sentence about the app (110 characters max)."
+   features:
+     - "Feature one"
+     - "Feature two"
+     - "Feature three"
+   highlights:
+     - "Interesting technical detail"
+     - "Another one"
+   tags: ["Kotlin", "Jetpack Compose", "Room"]
+   ---
+
+   ## Overview
+
+   What the app does and who it's for.
+
+   ## How it works
+
+   The interesting technical parts.
    ```
 
-3. **Add a row** to the Registry in [`docs/PROJECTS.md`](docs/PROJECTS.md) (same slug, title, status, type), then run `npm run check`.
-
-4. **Publish:**
-
-   ```bash
-   git add -A
-   git commit -m "Add My App"
-   git push
-   ```
-
-   GitHub Actions rebuilds the site, and the new page (and sitemap entry) goes live in about 1–2 minutes.
+3. **Screenshots** (live apps): `npm run screenshots -- my-app` pulls them from the app's Google Play listing.
+4. **Registry:** add a row to [`docs/PROJECTS.md`](docs/PROJECTS.md), then run `npm run check`.
+5. **Publish:** `git add -A`, `git commit -m "Add My App"`, `git push`. The site rebuilds in about 2 minutes.
 
 ### 📝 Still to fill in
 
+- [ ] Review and publish the 3 draft articles in `content/blog/`
 - [ ] Real email in `profile.email` (currently `hello@example.com`)
-- [ ] Company & dates in `experience`
-- [ ] `education`
+- [ ] Company & dates in `experience`, and `education`
 - [ ] LinkedIn / other profiles in `socials`
 - [ ] Optional: `public/resume.pdf`, then set `resumeUrl: '/resume.pdf'`
 
@@ -148,10 +151,14 @@ Requires **Node 20+**.
 
 ```bash
 npm install
-npm run dev       # dev server → http://localhost:5173
-npm run build     # pre-render every page to dist/ (+ sitemap.xml)
-npm run check     # registry ↔ site data sync + content rules
-npm run preview   # serve the production build
+npm run dev            # dev server → http://localhost:5173 (draft articles visible)
+npm run check          # validate content + registry + secrets scan
+npm run build          # pre-render pages + sitemap + RSS + share images + service worker
+npm run build:drafts   # local preview including draft articles (don't deploy)
+npm run preview        # serve the production build
+npm run icons          # normalise app icons (+ PWA icons)
+npm run screenshots -- <slug>   # fetch Google Play screenshots for an app
+npm run og             # regenerate share images (+ this README's banner)
 ```
 
 ---
@@ -159,26 +166,35 @@ npm run preview   # serve the production build
 ## 🗂️ Project structure
 
 ```
-├── .claude/commands/              # /add-project, /remove-project for Claude Code
+├── .claude/commands/              # /add-project, /remove-project, /new-post for Claude Code
 ├── .github/workflows/deploy.yml   # check + build + deploy to GitHub Pages on push to main
 ├── CLAUDE.md                      # AI agent rules + workflows
+├── content/
+│   ├── projects/*.md              # ⭐ one file per app: data + case study
+│   └── blog/*.md                  # ⭐ Dev Notes articles
 ├── docs/
-│   ├── SITE_PLAN.md               # site plan, content rules, decisions
+│   ├── SITE_PLAN.md               # site plan, content model, decisions
 │   └── PROJECTS.md                # project registry (inbox / on site / excluded)
 ├── public/
-│   ├── images/apps/               # app icons
-│   ├── og.png                     # social share image (1200×630)
-│   └── robots.txt
+│   ├── images/apps/               # app icons (<slug>.webp) + screenshots (<slug>/*.webp)
+│   ├── og.png                     # README banner (generated by npm run og)
+│   └── robots.txt, pwa-*.png      # crawler rules, icons for installing the site
+├── scripts/
+│   ├── content-fs.mjs             # Node content loader + validation
+│   ├── check-content.mjs          # npm run check
+│   ├── og.mjs                     # share images (satori + resvg)
+│   ├── rss.mjs                    # RSS / Atom feeds
+│   ├── icons.mjs                  # icon normalisation + PWA icons
+│   └── fetch-screenshots.mjs      # Google Play screenshots
 ├── src/
-│   ├── data/portfolio.js          # ⭐ all site content
-│   ├── views/                     # pages: Home, About, Projects, ProjectDetail, Contact, 404
-│   ├── components/                # ProjectCard, CommandPalette, TypeWriter, CountUp, …
-│   ├── composables/seo.js         # per-page meta tags + JSON-LD
-│   ├── directives/reveal.js       # v-reveal scroll animation
-│   ├── router/index.js            # routes
-│   └── style.css                  # Tailwind theme (green brand colours)
-├── scripts/check-projects.mjs     # registry ↔ data sync check (npm run check)
-└── vite.config.js                 # pre-render routes + sitemap generation
+│   ├── content/                   # schema (zod) + browser loader for content/
+│   ├── data/portfolio.js          # profile, skills, experience, nav
+│   ├── views/                     # Home, About, Projects, ProjectDetail, Blog, BlogPost, Contact, 404
+│   ├── components/                # ProjectCard, ScreenshotGallery, CommandPalette, PostCard, …
+│   ├── composables/               # seo.js (meta + JSON-LD), internal links, palette state
+│   ├── utils/search.js            # MiniSearch full-text search
+│   └── style.css                  # Tailwind theme + Markdown (prose) styles
+└── vite.config.js                 # Markdown, PWA, image optimiser, pre-render routes, sitemap/RSS/OG
 ```
 
 ---
@@ -197,10 +213,11 @@ Hosted on **GitHub Pages** at **https://ravioriginfo.github.io/**.
 
 | What | Where |
 | --- | --- |
-| Pre-rendered HTML for every page (HTTP 200) | `vite-ssg`, routes in `vite.config.js` |
+| Pre-rendered HTML for every page (HTTP 200) | `vite-ssg`, routes generated from `content/` |
 | Title, description, canonical, Open Graph, Twitter | `src/composables/seo.js` |
-| Structured data (Person, SoftwareApplication, Breadcrumbs) | `useSeo()` calls in each view |
-| Sitemap | auto-generated → https://ravioriginfo.github.io/sitemap.xml |
+| Structured data (Person, SoftwareApplication, BlogPosting, Breadcrumbs) | `useSeo()` calls in each view |
+| Share image per page | generated at build → `/og/…png` |
+| Sitemap / RSS | https://ravioriginfo.github.io/sitemap.xml · `/blog/rss.xml` once posts are published |
 | Robots | https://ravioriginfo.github.io/robots.txt |
 
 **Next step:** add the site in [Google Search Console](https://search.google.com/search-console) and submit `sitemap.xml`.

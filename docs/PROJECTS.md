@@ -1,9 +1,9 @@
 # Project Registry
 
 > **Source of truth for which apps appear on https://ravioriginfo.github.io/.**
-> Every app on the site must have a row in **Registry**, and every Registry row must exist in
-> [`src/data/portfolio.js`](../src/data/portfolio.js). `npm run check` (also run in CI before every
-> deploy) fails if the two drift apart.
+> Each app is one Markdown file, `content/projects/<slug>.md` (data + case study). Every app file must have a row in
+> **Registry**, and every Registry row must have a file. `npm run check` (also run in CI before every deploy) fails if the
+> two drift apart.
 >
 > Workflow for adding, updating or removing apps: [`CLAUDE.md`](../CLAUDE.md#workflows) · Site plan: [`SITE_PLAN.md`](SITE_PLAN.md)
 
@@ -65,5 +65,6 @@ Apps that were deliberately removed or skipped. Before adding a new project, che
 
 Newest first. One line per change to the project list.
 
+- **2026-10-02:** Moved all apps to Markdown files in `content/projects/`, with case studies and Google Play screenshots.
 - **2026-10-02:** Removed `all-message-social`, `ravi-message`, `ravi-phone-call`, `ravi-gallery` (unpublished).
 - **2026-10-02:** Initial import: 11 Google Play apps + PDF Reader (in progress) + unpublished builds.
