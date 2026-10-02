@@ -52,6 +52,26 @@ for (const p of posts) {
   if (p.draft) warn.push(`blog/${p.slug}: draft (not published)`)
 }
 
+// ── Blog registry (docs/POSTS.md) ↔ content/blog ──────────
+const postsMd = readFileSync(at('docs/POSTS.md'), 'utf8')
+const postsBlock = postsMd.match(/<!-- posts:start[^>]*-->([\s\S]*?)<!-- posts:end -->/)
+if (!postsBlock) errors.push('docs/POSTS.md: registry markers not found')
+const postRows = (postsBlock?.[1] ?? '')
+  .split('\n')
+  .filter((l) => l.trim().startsWith('|') && !/^\|\s*(Slug|---)/.test(l.trim()))
+  .map((l) => l.split('|').slice(1, -1).map((c) => c.trim()))
+  .map(([slug, title, status, date]) => ({ slug, title, status, date }))
+const postBySlug = new Map(posts.map((p) => [p.slug, p]))
+for (const r of postRows) {
+  const p = postBySlug.get(r.slug)
+  if (!p) { errors.push(`${r.slug}: in POSTS.md registry but content/blog/${r.slug}.md is missing`); continue }
+  const status = p.draft ? 'draft' : 'published'
+  for (const [k, a, b] of [['title', r.title, p.title], ['status', r.status, status], ['date', r.date, p.date]])
+    if (a !== b) errors.push(`blog/${r.slug}: ${k} differs (POSTS.md "${a}" vs content "${b}")`)
+}
+const postRegSlugs = new Set(postRows.map((r) => r.slug))
+for (const p of posts) if (!postRegSlugs.has(p.slug)) errors.push(`blog/${p.slug}: content/blog/${p.slug}.md is not in the POSTS.md registry`)
+
 // ── No secrets in content ──────────────────────────────────
 const SECRETS = [[/ca-app-pub-\d+/, 'AdMob ad unit ID'], [/AIza[0-9A-Za-z_-]{20,}/, 'Google API key'], [/storePassword|keyPassword|storeFile\s*=/, 'keystore detail']]
 for (const item of [...projects.map((p) => ['projects', p]), ...posts.map((p) => ['blog', p])]) {

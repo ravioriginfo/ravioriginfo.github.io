@@ -76,7 +76,7 @@ The file name is the slug and URL (`/projects/<slug>`). **Never rename a publish
 | `relatedProjects` | — | Existing project slugs (checked) |
 | `draft` | — | `true` = visible only in `npm run dev` / `build:drafts`; **stripped from production bundles** |
 
-Reading time is computed automatically.
+Reading time is computed automatically. The article **list** (published, drafts, ideas) is tracked in [`POSTS.md`](POSTS.md).
 
 ### Icon rules
 Copy the icon from the app's source, in this order of preference:
@@ -172,6 +172,7 @@ Newest first. Record decisions that a future agent might otherwise undo.
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-02 | Articles get their own registry, `docs/POSTS.md`, checked by `npm run check` like `PROJECTS.md`. |
 | 2026-10-02 | **Content-driven:** projects and posts are Markdown files validated by zod; the old hard-coded `projects` array was removed. |
 | 2026-10-02 | Blog ("Dev Notes") added. Articles are drafted from real code and stay `draft: true` until the owner approves; drafts are stripped from production bundles. |
 | 2026-10-02 | Screenshots come only from each app's **own** Google Play listing (owner approved). Design-reference images in the source repos are never published. |

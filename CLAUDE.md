@@ -16,6 +16,7 @@ Guidance for AI agents working on this repo. **This site is maintained with AI**
 | --- | --- |
 | [`docs/SITE_PLAN.md`](docs/SITE_PLAN.md) | Pages, content model (field-by-field), design system, SEO, search, PWA, backlog, **decision log** |
 | [`docs/PROJECTS.md`](docs/PROJECTS.md) | **Project registry**: Inbox (to add), Registry (on site), Excluded (never re-add), Changelog |
+| [`docs/POSTS.md`](docs/POSTS.md) | **Blog registry**: Ideas (to write), Registry (published / draft), Changelog |
 | `content/projects/<slug>.md` | One app = one file: frontmatter (data) + Markdown case study |
 | `content/blog/<slug>.md` | One article = one file: frontmatter + Markdown body (`draft: true` until approved) |
 | [`src/content/schema.js`](src/content/schema.js) | zod schemas, the exact rules every content file must pass |
@@ -80,13 +81,14 @@ Source projects live in `D:\workspace\producation\` (shipped) and `D:\workspace\
 ### Update a project
 Edit `content/projects/<slug>.md`. If title/status/type/featured/playPackage changed, update the registry row too. **Never rename a published file/slug** (it breaks links and SEO).
 
-### Write an article (`/new-post <topic>`)
-1. Research the topic from the real source projects (read-only). Never invent numbers, users or results, and never include secrets (keys, ad IDs, keystores).
+### Write an article (`/new-post <topic>`, or "write the next article from the ideas list")
+1. Pick the topic (from the argument, or the top of **Ideas** in `docs/POSTS.md`). Research the topic from the real source projects (read-only). Never invent numbers, users or results, and never include secrets (keys, ad IDs, keystores).
 2. Create `content/blog/<kebab-slug>.md` with frontmatter per `postSchema`:
    - `title`, `description` (≤ 170 chars), `date`, `tags`, `relatedProjects`
    - **`draft: true`**
 3. Write the article: an intro, `##` sections (they become the table of contents), simplified code snippets, and a takeaways section. Link apps as `/projects/<slug>`.
-4. `npm run check`, then let the owner review with `npm run dev` (or `npm run build:drafts`). **Only after the owner approves**, set `draft: false`, then build, commit and push.
+4. **Update `docs/POSTS.md`:** add the Registry row (slug, title, `draft`, date, related apps), update Totals, remove the idea line, and add a Changelog line.
+5. `npm run check`, then let the owner review with `npm run dev` (or `npm run build:drafts`). **Only after the owner approves**, set `draft: false`, change the Registry status to `published`, add a Changelog line, then build, commit, push, and confirm `https://ravioriginfo.github.io/blog/<slug>` returns 200.
 
 ## Rules
 
@@ -96,5 +98,6 @@ Edit `content/projects/<slug>.md`. If title/status/type/featured/playPackage cha
 - **Drafts never ship:** a Vite plugin strips draft posts from production bundles. Don't bypass it, and never deploy a `build:drafts` output.
 - **SSR-safe code only:** no `window`/`document` during component setup (use `onMounted`, handlers, or `typeof document` guards).
 - **Per-page SEO** goes through `useSeo()` (`src/composables/seo.js`); don't set `document.title` manually.
+- **Keep both registries in sync:** `npm run check` fails if `docs/PROJECTS.md` or `docs/POSTS.md` disagree with `content/`.
 - **Record decisions:** when a decision changes, add a row to SITE_PLAN §9 Decision log.
 - **Commits:** end messages with the Co-Authored-By trailer used in the history.
