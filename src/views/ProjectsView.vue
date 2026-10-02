@@ -7,6 +7,7 @@ import ProjectCard from '../components/ProjectCard.vue'
 import SectionHeading from '../components/SectionHeading.vue'
 import { SITE_URL } from '../data/portfolio'
 import { useSeo } from '../composables/seo'
+import { projectFields, score, tokenize } from '../utils/search'
 
 useSeo({
   title: 'Android Apps & Projects',
@@ -43,12 +44,19 @@ const order = { 'in-progress': 0, live: 1, completed: 2 }
 const sorted = [...projects].sort((a, b) => order[a.status] - order[b.status])
 
 function matches(p, { q: text = q.value, s = status.value, t = type.value } = {}) {
-  const needle = text.trim().toLowerCase()
-  const hay = [p.title, p.type, p.summary, ...p.tags, ...p.features].join(' ').toLowerCase()
-  return (!needle || hay.includes(needle)) && (!s || p.status === s) && (!t || p.type === t)
+  return score(projectFields(p), tokenize(text)) > 0 && (!s || p.status === s) && (!t || p.type === t)
 }
 
-const filtered = computed(() => sorted.filter((p) => matches(p)))
+// With a search query, most relevant first; otherwise in-progress → live → completed.
+const filtered = computed(() => {
+  const tokens = tokenize(q.value)
+  const list = sorted.filter((p) => matches(p))
+  if (!tokens.length) return list
+  return list
+    .map((p, i) => ({ p, i, s: score(projectFields(p), tokens) }))
+    .sort((a, b) => b.s - a.s || a.i - b.i)
+    .map((r) => r.p)
+})
 const statusCount = (s) => projects.filter((p) => matches(p, { s })).length
 const typeCount = (t) => projects.filter((p) => matches(p, { t })).length
 const hasFilters = computed(() => q.value || status.value || type.value)

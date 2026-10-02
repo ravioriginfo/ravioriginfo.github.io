@@ -6,6 +6,7 @@ import { personSchema, useSeo } from '../composables/seo'
 import AppIcon from '../components/AppIcon.vue'
 import SkillBadge from '../components/SkillBadge.vue'
 import StatusBadge from '../components/StatusBadge.vue'
+import GooglePlayBadge from '../components/GooglePlayBadge.vue'
 import NotFoundView from './NotFoundView.vue'
 
 const props = defineProps({ slug: { type: String, required: true } })
@@ -96,10 +97,8 @@ if (p) {
           </div>
         </div>
 
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a v-if="project.playUrl" :href="project.playUrl" target="_blank" rel="noopener" class="btn-primary">
-            <AppIcon name="play" class="size-4" /> Get it on Google Play
-          </a>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <GooglePlayBadge v-if="project.playUrl" :href="project.playUrl" :app-name="project.title" size="lg" />
           <span v-else class="btn cursor-default bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
             {{ statuses[project.status].label }} — not published yet
           </span>

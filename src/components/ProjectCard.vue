@@ -4,6 +4,7 @@ import { useMouseInElement } from '@vueuse/core'
 import SkillBadge from './SkillBadge.vue'
 import StatusBadge from './StatusBadge.vue'
 import AppIcon from './AppIcon.vue'
+import GooglePlayBadge from './GooglePlayBadge.vue'
 
 const props = defineProps({ project: { type: Object, required: true } })
 
@@ -48,20 +49,12 @@ const visibleTags = computed(() => props.project.tags.slice(0, 4))
       </div>
     </RouterLink>
 
-    <div class="relative flex items-center justify-between border-t border-slate-100 px-6 py-3 text-sm dark:border-slate-800">
+    <div class="relative flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-6 py-3 text-sm dark:border-slate-800">
       <RouterLink :to="`/projects/${project.slug}`" class="inline-flex items-center gap-1 font-semibold text-brand-600 dark:text-brand-400">
         Details <AppIcon name="arrow" class="size-4 transition group-hover:translate-x-1" />
       </RouterLink>
-      <a
-        v-if="project.playUrl"
-        :href="project.playUrl"
-        target="_blank"
-        rel="noopener"
-        class="relative z-10 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"
-        :aria-label="`${project.title} on Google Play`"
-      >
-        <AppIcon name="play" class="size-4" /> Google Play
-      </a>
+      <GooglePlayBadge v-if="project.playUrl" :href="project.playUrl" :app-name="project.title" size="sm" class="relative z-10" />
+      <span v-else class="text-xs text-slate-500">{{ project.status === 'in-progress' ? 'Coming soon' : 'Not on Play' }}</span>
     </div>
   </div>
 </template>

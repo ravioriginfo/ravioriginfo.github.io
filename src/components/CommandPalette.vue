@@ -5,6 +5,7 @@ import { onKeyStroke, useScrollLock } from '@vueuse/core'
 import { nav, projects } from '../data/portfolio'
 import AppIcon from './AppIcon.vue'
 import StatusBadge from './StatusBadge.vue'
+import { projectFields, score, tokenize } from '../utils/search'
 
 const open = defineModel({ type: Boolean, default: false })
 const router = useRouter()
@@ -14,7 +15,7 @@ const input = ref(null)
 const locked = useScrollLock(typeof document !== 'undefined' ? document.body : null)
 
 const entries = [
-  ...nav.map((n) => ({ id: n.to, label: n.label, hint: 'Page', to: n.to })),
+  ...nav.map((n) => ({ id: n.to, label: n.label, hint: 'Page', to: n.to, fields: { title: n.label } })),
   ...projects.map((p) => ({
     id: p.slug,
     label: p.title,
@@ -22,17 +23,26 @@ const entries = [
     to: `/projects/${p.slug}`,
     icon: p.icon,
     status: p.status,
-    haystack: [p.title, p.type, p.summary, ...p.tags].join(' ').toLowerCase(),
+    fields: projectFields(p),
   })),
 ]
 
 const results = computed(() => {
-  const q = query.value.trim().toLowerCase()
-  if (!q) return entries
-  return entries.filter((e) => (e.haystack ?? e.label.toLowerCase()).includes(q))
+  const tokens = tokenize(query.value)
+  if (!tokens.length) return entries
+  return entries
+    .map((e, i) => ({ e, i, s: score(e.fields, tokens) }))
+    .filter((r) => r.s > 0)
+    .sort((a, b) => b.s - a.s || a.i - b.i)
+    .map((r) => r.e)
 })
 
 watch(results, () => (active.value = 0))
+// Keep the highlighted row visible while arrowing through a long list.
+watch(active, async (i) => {
+  await nextTick()
+  document.getElementById(`palette-item-${i}`)?.scrollIntoView({ block: 'nearest' })
+})
 watch(open, async (v) => {
   locked.value = v
   if (v) {
@@ -94,6 +104,7 @@ function onKey(e) {
           <ul class="max-h-[60vh] overflow-y-auto p-2">
             <li v-for="(r, i) in results" :key="r.id">
               <button
+                :id="`palette-item-${i}`"
                 class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left"
                 :class="i === active ? 'bg-brand-50 dark:bg-brand-500/10' : ''"
                 @mouseenter="active = i"

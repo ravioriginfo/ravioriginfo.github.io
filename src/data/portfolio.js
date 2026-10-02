@@ -356,23 +356,7 @@ export const projects = [
     variants: 'Two variants: a base build and one with a caller-ID add-on.',
     tags: ['Kotlin', 'Jetpack Compose', 'Default SMS role', 'Hilt', 'Room', 'RxJava'],
   },
-  {
-    slug: 'ravi-gallery',
-    title: 'Photo Video Gallery',
-    type: 'Gallery & Media',
-    status: 'completed',
-    icon: '/images/apps/ravi-gallery.png',
-    summary: 'Compose gallery with timeline, editor with filters, EXIF viewer and system picker.',
-    features: [
-      'Timeline and album browsing, video player',
-      'Favorites, trash, hidden albums and search',
-      'Photo editor with crop and GPU filters',
-      'EXIF / location viewer and set as wallpaper',
-    ],
-    highlights: ['Coil 3 with AVIF / JXL / SVG support', 'GPUImage filters', 'Hilt, Room, WorkManager'],
-    basedOn: 'Gallery (IacobIonut01)',
-    tags: ['Kotlin', 'Jetpack Compose', 'Hilt', 'Room', 'Coil', 'Media3 ExoPlayer'],
-  },
+
   {
     slug: 'ravi-phone-call',
     title: 'Ravi Phone Call',
