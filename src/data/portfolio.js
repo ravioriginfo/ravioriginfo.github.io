@@ -14,7 +14,7 @@ export const profile = {
   tagline:
     'I build and ship Android apps people use every day — dialers, SMS messengers, galleries, calendars and a full PDF editor.',
   location: 'India',
-  email: 'hello@example.com', // TODO: replace with your real email
+  email: 'ravisorathiya1756@gmail.com',
   resumeUrl: '', // e.g. '/resume.pdf' after adding the file to /public
   availableForWork: true,
   avatar: '', // e.g. '/images/avatar.jpg' — leave empty to show initials

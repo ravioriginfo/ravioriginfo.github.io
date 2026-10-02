@@ -13,6 +13,7 @@ export const personSchema = {
   url: `${SITE_URL}/`,
   image: DEFAULT_IMAGE,
   description: profile.shortBio,
+  email: `mailto:${profile.email}`,
   knowsAbout: ['Android development', 'Kotlin', 'Jetpack Compose', 'Clean Architecture', 'Firebase', 'Google Play'],
   sameAs: socials.map((s) => s.url),
 }

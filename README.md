@@ -138,7 +138,6 @@ You can also add a line to the **Inbox** in `docs/PROJECTS.md` and ask Claude to
 
 ### 📝 Still to fill in
 
-- [ ] Real email in `profile.email` (currently `hello@example.com`)
 - [ ] Company & dates in `experience`, and `education`
 - [ ] LinkedIn / other profiles in `socials`
 - [ ] Optional: `public/resume.pdf`, then set `resumeUrl: '/resume.pdf'`

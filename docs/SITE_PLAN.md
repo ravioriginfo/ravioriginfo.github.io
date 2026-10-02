@@ -156,7 +156,7 @@ Profile, socials, skills, experience and education are in [`src/data/portfolio.j
 ## 8. Backlog
 
 - [x] Review the 3 draft articles in `content/blog/` and publish (`draft: false`)
-- [ ] Real email in `profile.email` (currently `hello@example.com`)
+- [x] Real email in `profile.email`
 - [ ] Company & dates in `experience`; fill `education`
 - [ ] LinkedIn / other profiles in `socials`
 - [ ] Optional: `public/resume.pdf` + `resumeUrl`
