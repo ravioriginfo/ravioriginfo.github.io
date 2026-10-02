@@ -338,24 +338,7 @@ export const projects = [
   },
 
   // ── Completed (not published) ─────────────────────────────
-  {
-    slug: 'ravi-message',
-    title: 'RaviMessage',
-    type: 'Messaging',
-    status: 'completed',
-    icon: '/images/apps/ravi-message.png',
-    summary: 'A full default SMS/MMS client with scheduling, keyword blocking and text-to-speech.',
-    features: [
-      'Inbox, compose, group MMS and quick-reply popup',
-      'Scheduled messages, auto-delete, backup & restore',
-      'Block numbers and keywords',
-      'Widgets, direct-share targets and read-aloud of unread messages',
-    ],
-    highlights: ['Compose presentation over a multi-module domain/data stack', 'Hilt, Room, RxJava + coroutines'],
-    basedOn: 'QKSMS',
-    variants: 'Two variants: a base build and one with a caller-ID add-on.',
-    tags: ['Kotlin', 'Jetpack Compose', 'Default SMS role', 'Hilt', 'Room', 'RxJava'],
-  },
+
 
 
   {
