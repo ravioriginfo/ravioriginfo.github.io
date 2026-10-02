@@ -61,6 +61,31 @@
 
 ---
 
+## 🤖 AI-driven maintenance
+
+This site is maintained with Claude Code. The plan and project tracking live in the repo:
+
+| File | Purpose |
+| --- | --- |
+| [`CLAUDE.md`](CLAUDE.md) | Rules and step-by-step workflows that AI agents follow |
+| [`docs/SITE_PLAN.md`](docs/SITE_PLAN.md) | Site plan: pages, content rules, design system, SEO, backlog, decision log |
+| [`docs/PROJECTS.md`](docs/PROJECTS.md) | Project registry: 📥 Inbox, ✅ on site, 🚫 excluded, 📝 changelog |
+
+**Add a new app the easy way:**
+
+```text
+/add-project producation/MyNewApp
+```
+
+Or add a line to the **Inbox** in `docs/PROJECTS.md` and ask Claude to *"process the project inbox"*.
+Claude reads the app's source, checks Google Play, copies the icon, adds it to the site, updates the registry, and publishes.
+
+To remove one: `/remove-project <slug>`. It moves to **Excluded** so it never gets re-added by mistake.
+
+`npm run check` (also run in CI before every deploy) blocks a deploy if the registry and the site data disagree.
+
+---
+
 ## ✏️ How to update the site
 
 Almost everything is in **one file: [`src/data/portfolio.js`](src/data/portfolio.js)**.
@@ -74,7 +99,7 @@ Almost everything is in **one file: [`src/data/portfolio.js`](src/data/portfolio
 | Add, edit or remove an app | `projects` |
 | Change the colour theme | `--color-brand-*` in [`src/style.css`](src/style.css) |
 
-### ➕ Add a new app (3 steps)
+### ➕ Add a new app by hand (4 steps)
 
 1. **Put the icon** in `public/images/apps/`, e.g. `my-app.png` (512×512 works best).
 2. **Add an entry** to `projects` in `src/data/portfolio.js`:
@@ -95,7 +120,9 @@ Almost everything is in **one file: [`src/data/portfolio.js`](src/data/portfolio
    },
    ```
 
-3. **Publish:**
+3. **Add a row** to the Registry in [`docs/PROJECTS.md`](docs/PROJECTS.md) (same slug, title, status, type), then run `npm run check`.
+
+4. **Publish:**
 
    ```bash
    git add -A
@@ -123,6 +150,7 @@ Requires **Node 20+**.
 npm install
 npm run dev       # dev server → http://localhost:5173
 npm run build     # pre-render every page to dist/ (+ sitemap.xml)
+npm run check     # registry ↔ site data sync + content rules
 npm run preview   # serve the production build
 ```
 
@@ -131,7 +159,12 @@ npm run preview   # serve the production build
 ## 🗂️ Project structure
 
 ```
-├── .github/workflows/deploy.yml   # build + deploy to GitHub Pages on push to main
+├── .claude/commands/              # /add-project, /remove-project for Claude Code
+├── .github/workflows/deploy.yml   # check + build + deploy to GitHub Pages on push to main
+├── CLAUDE.md                      # AI agent rules + workflows
+├── docs/
+│   ├── SITE_PLAN.md               # site plan, content rules, decisions
+│   └── PROJECTS.md                # project registry (inbox / on site / excluded)
 ├── public/
 │   ├── images/apps/               # app icons
 │   ├── og.png                     # social share image (1200×630)
@@ -144,6 +177,7 @@ npm run preview   # serve the production build
 │   ├── directives/reveal.js       # v-reveal scroll animation
 │   ├── router/index.js            # routes
 │   └── style.css                  # Tailwind theme (green brand colours)
+├── scripts/check-projects.mjs     # registry ↔ data sync check (npm run check)
 └── vite.config.js                 # pre-render routes + sitemap generation
 ```
 
@@ -153,7 +187,7 @@ npm run preview   # serve the production build
 
 Hosted on **GitHub Pages** at **https://ravioriginfo.github.io/**.
 
-- Every push to `main` triggers [`deploy.yml`](.github/workflows/deploy.yml): `npm ci`, then `npm run build`, then publish `dist/`.
+- Every push to `main` triggers [`deploy.yml`](.github/workflows/deploy.yml): `npm ci`, then `npm run check`, then `npm run build`, then publish `dist/`.
 - Check progress under the [**Actions** tab](https://github.com/ravioriginfo/ravioriginfo.github.io/actions).
 - One-time setting (already done): **Settings → Pages → Source: GitHub Actions**.
 
