@@ -7,6 +7,8 @@
 export { SITE_URL } from './site.js'
 import { posts, projects } from '../content'
 
+const liveCount = projects.filter((p) => p.status === 'live').length
+
 export const profile = {
   name: 'Ravi Sorathiya',
   role: 'Android Developer',
@@ -19,7 +21,7 @@ export const profile = {
   availableForWork: true,
   avatar: '', // e.g. '/images/avatar.jpg' — leave empty to show initials
   shortBio:
-    'Android developer working in Kotlin and Jetpack Compose. I have shipped 11 apps to Google Play — from default dialers and SMS clients that take over core phone roles, to media galleries and productivity tools.',
+    `Android developer working in Kotlin and Jetpack Compose. I have shipped ${liveCount} apps to Google Play — from default dialers and SMS clients that take over core phone roles, to media galleries and productivity tools.`,
   bio: [
     'I build native Android apps end to end: architecture, UI, background work, monetization and release. Most of my work lives on Google Play, where apps have to be fast, stable and pass strict policy review.',
     'A lot of it sits close to the platform — replacement phone dialers built on InCallService and CallScreeningService, default SMS/MMS messengers, exact-alarm scheduling, home-screen widgets, and media apps that handle Android 14 partial photo access.',
@@ -72,6 +74,8 @@ export const statuses = {
 
 // Projects and blog posts live in Markdown under /content (see src/content/index.js).
 export { projects, posts, types, postTags, getProject, getPost } from '../content'
+
+export { liveCount }
 
 export const stats = [
   { label: 'Apps live on Google Play', value: projects.filter((p) => p.status === 'live').length },

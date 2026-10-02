@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { education, experience, profile, projects, skills } from '../data/portfolio'
+import { education, experience, liveCount, profile, projects, skills } from '../data/portfolio'
 import AppIcon from '../components/AppIcon.vue'
 import SectionHeading from '../components/SectionHeading.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -9,7 +9,7 @@ import { personSchema, useSeo } from '../composables/seo'
 
 useSeo({
   title: 'About — Android Developer (Kotlin, Jetpack Compose)',
-  description: `About ${profile.name}: Android developer skilled in Kotlin, Jetpack Compose, Hilt, Room, CameraX and Firebase, with 11 apps shipped to Google Play.`,
+  description: `About ${profile.name}: Android developer skilled in Kotlin, Jetpack Compose, Hilt, Room, CameraX and Firebase, with ${liveCount} apps shipped to Google Play.`,
   path: '/about',
   type: 'profile',
   jsonLd: [{ '@type': 'ProfilePage', mainEntity: personSchema }],
