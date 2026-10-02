@@ -352,21 +352,7 @@ export const projects = [
     highlights: ['Room for recordings metadata', 'FileProvider sharing'],
     tags: ['Kotlin', 'XML Views', 'Room', 'Firebase'],
   },
-  {
-    slug: 'all-message-social',
-    title: 'All Message Social',
-    type: 'Social',
-    status: 'completed',
-    icon: '/images/apps/all-message-social.png',
-    summary: 'Social hub opening WhatsApp Web, Instagram, YouTube and 15+ services in-app.',
-    features: [
-      'WhatsApp Web, Facebook, Instagram, X, TikTok, YouTube, Reddit and more',
-      'Choose and reorder your apps',
-      'Quick-launch notification',
-    ],
-    highlights: ['Jetpack Compose + Material 3', 'Room for user-selected apps, Lingver localisation'],
-    tags: ['Kotlin', 'Jetpack Compose', 'Room', 'DataStore', 'Firebase'],
-  },
+
 ]
 
 export const types = [...new Set(projects.map((p) => p.type))]
