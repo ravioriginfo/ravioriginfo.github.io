@@ -1,0 +1,81 @@
+<script setup>
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useDark, useToggle, useWindowScroll } from '@vueuse/core'
+import { nav, profile } from '../data/portfolio'
+import AppIcon from './AppIcon.vue'
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
+const { y } = useWindowScroll()
+const open = ref(false)
+const route = useRoute()
+
+watch(() => route.fullPath, () => (open.value = false))
+
+const isActive = (to) => (to === '/' ? route.path === '/' : route.path.startsWith(to))
+</script>
+
+<template>
+  <header
+    class="sticky top-0 z-40 border-b transition-colors"
+    :class="y > 8 || open
+      ? 'border-slate-200 bg-white/85 backdrop-blur dark:border-slate-800 dark:bg-slate-950/85'
+      : 'border-transparent bg-transparent'"
+  >
+    <nav class="container-page flex h-16 items-center justify-between">
+      <RouterLink to="/" class="font-mono text-lg font-semibold text-slate-900 dark:text-white">
+        {{ profile.name.split(' ')[0].toLowerCase() }}<span class="text-brand-500">.dev</span>
+      </RouterLink>
+
+      <div class="hidden items-center gap-1 md:flex">
+        <RouterLink
+          v-for="item in nav"
+          :key="item.to"
+          :to="item.to"
+          class="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+          :class="{ '!text-brand-600 dark:!text-brand-400': isActive(item.to) }"
+        >
+          {{ item.label }}
+        </RouterLink>
+        <button
+          class="ml-2 grid size-9 place-items-center rounded-md text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+          :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+          @click="toggleDark()"
+        >
+          <AppIcon :name="isDark ? 'sun' : 'moon'" class="size-5" />
+        </button>
+      </div>
+
+      <div class="flex items-center gap-1 md:hidden">
+        <button
+          class="grid size-10 place-items-center rounded-md text-slate-600 dark:text-slate-400"
+          :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+          @click="toggleDark()"
+        >
+          <AppIcon :name="isDark ? 'sun' : 'moon'" class="size-5" />
+        </button>
+        <button
+          class="grid size-10 place-items-center rounded-md text-slate-700 dark:text-slate-300"
+          :aria-expanded="open"
+          aria-label="Toggle menu"
+          @click="open = !open"
+        >
+          <AppIcon :name="open ? 'close' : 'menu'" class="size-6" />
+        </button>
+      </div>
+    </nav>
+
+    <div v-if="open" class="container-page pb-4 md:hidden">
+      <RouterLink
+        v-for="item in nav"
+        :key="item.to"
+        :to="item.to"
+        class="block rounded-md px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+        :class="{ '!text-brand-600 dark:!text-brand-400': isActive(item.to) }"
+      >
+        {{ item.label }}
+      </RouterLink>
+    </div>
+  </header>
+</template>

@@ -1,0 +1,7 @@
+node_modules
+dist
+.idea
+*.log
+.DS_Store
+.claude/settings.local.json
+.mcp.json
