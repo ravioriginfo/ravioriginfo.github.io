@@ -4,7 +4,7 @@ description: "How a third-party Android dialer takes over calls with InCallServi
 date: 2026-10-01
 tags: ["Android", "Kotlin", "Telecom", "InCallService", "CallScreeningService"]
 relatedProjects: ["phone-call", "contacts-dialer", "phone-caller-contacts"]
-draft: true
+draft: false
 ---
 
 Android lets a third-party app become the **default phone app**. When it does, the system hands it every call: incoming, outgoing, conference. The app is responsible for the whole experience. I've shipped several dialers on Google Play, including [Phone Call](/projects/phone-call) and [Contacts](/projects/contacts-dialer). This post walks through the two framework services that make it possible, and the decisions that matter in practice.

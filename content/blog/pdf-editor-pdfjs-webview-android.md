@@ -4,7 +4,7 @@ description: "Why my Android PDF editor runs pdf.js in a WebView bridged to Kotl
 date: 2026-10-02
 tags: ["Android", "Kotlin", "Jetpack Compose", "pdf.js", "WebView"]
 relatedProjects: ["pdf-reader"]
-draft: true
+draft: false
 ---
 
 Most Android PDF apps pick one of two paths: render pages with the platform `PdfRenderer` (view-only), or license a commercial SDK. For my [PDF Reader & Editor](/projects/pdf-reader) I took a third route: **pdf.js running inside a WebView, bridged to Kotlin and driven by a Jetpack Compose UI.**

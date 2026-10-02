@@ -137,7 +137,6 @@ You can also add a line to the **Inbox** in `docs/PROJECTS.md` and ask Claude to
 
 ### 📝 Still to fill in
 
-- [ ] Review and publish the 3 draft articles in `content/blog/`
 - [ ] Real email in `profile.email` (currently `hello@example.com`)
 - [ ] Company & dates in `experience`, and `education`
 - [ ] LinkedIn / other profiles in `socials`

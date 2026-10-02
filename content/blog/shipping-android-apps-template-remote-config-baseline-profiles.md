@@ -4,7 +4,7 @@ description: "The shared foundation behind my Google Play apps: Firebase Remote 
 date: 2026-09-30
 tags: ["Android", "Firebase", "Google Play", "Performance", "Architecture"]
 relatedProjects: ["phone-call", "messages-compose", "gallery-pro", "calendar-2026"]
-draft: true
+draft: false
 ---
 
 I've shipped [11 apps to Google Play](/projects?status=live): dialers, SMS messengers, galleries, a calendar and an alarm clock. They solve very different problems, but they share the same **foundation**. Building that foundation once and reusing it is what makes shipping, and maintaining, that many apps realistic.
